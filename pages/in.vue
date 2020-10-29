@@ -17,3 +17,6 @@
     </v-col>
   </v-row>
 </template>
+<router>
+  path: '/inspire'
+</router>
