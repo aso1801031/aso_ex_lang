@@ -51,6 +51,15 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        },
+        light:{
+          primary: '#222831',
+          accent: '#00ADB5',
+          secondary: '#393E46',
+          info: '#EEEEEE',
+          warning: colors.amber.base,
+          error: '#C02626',
+          success: '#32C19F'
         }
       }
     }
