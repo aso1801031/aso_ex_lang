@@ -7,7 +7,7 @@
       class="secondary white--text"
     >
      <h1>
-      <nuxt-link to='/index' class="white--text" style="text-decoration: none;">
+      <nuxt-link to='/' class="white--text" style="text-decoration: none;">
        Service Name
       </nuxt-link>
      </h1>
@@ -15,13 +15,16 @@
       <div v-for="(item,i) in items"
           :key="i"
           :to="item.to"
+          :src="item.icon"
           router
           exact
         >
           <nuxt-link v-bind='item' class="white--text mr-3" style="text-decoration: none;">
             {{item.title}}
-          </nuxt-link>
 
+            <img v-bind:src='item.icon' width='16px' height="16px">
+
+          </nuxt-link>
       </div>
 
 
@@ -49,27 +52,27 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: require('@/assets/search.png'),
           title: '検索',
           to: '/search'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: require('@/assets/schedule.png'),
           title: '予定確認',
           to: '/schedule'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: require('@/assets/graph.png'),
           title: '学習履歴確認',
           to: '/history'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: require('@/assets/lesson_register.png'),
           title: 'レッスン登録',
           to: '/lesson_register'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: require('@/assets/profile.png'),
           title: 'プロフィール',
           to: '/profile'
         }
