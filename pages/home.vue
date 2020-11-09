@@ -10,11 +10,11 @@
         <!-- ボタンエリア -->
         <div class="btn_area">
             <p>
-                <button onclick="location.href='search'" class="btn_design"><img width="20%" height="20%" src="/image/Search.png"><br>検索</button>
-                <button onclick="location.href='lesson_register'" class="btn_design"><img width="20%" height="20%" src="/image/Lesson.png"><br>レッスン登録</button>
-                <button onclick="location.href='schedule'" class="btn_design"><img width="20%" height="20%" src="/image/Schedule.png"><br>スケジュール確認</button>
-                <button onclick="location.href='history'" class="btn_design"><img width="20%" height="20%" src="/image/History.png"><br>学習履歴確認</button>
-                <button onclick="location.href='profile'" class="btn_design"><img width="20%" height="20%" src="/image/Profile.png"><br>プロフィール</button>
+                <button onclick="location.href='search'" class="btn_design accent"><img width="20%" height="20%" src="/image/Search.png"><br>検索</button>
+                <button onclick="location.href='lesson_register'" class="btn_design accent"><img width="20%" height="20%" src="/image/Lesson.png"><br>レッスン登録</button>
+                <button onclick="location.href='schedule'" class="btn_design accent"><img width="20%" height="20%" src="/image/Schedule.png"><br>スケジュール確認</button>
+                <button onclick="location.href='history'" class="btn_design accent"><img width="20%" height="20%" src="/image/History.png"><br>学習履歴確認</button>
+                <button onclick="location.href='profile'" class="btn_design accent"><img width="20%" height="20%" src="/image/Profile.png"><br>プロフィール</button>
                 <!-- <button onclick="location.href='profile'" class="btn_design"><img width="20%" height="20%" src="/image/www.png"><br>プロフィール</button> -->
             </p>
         </div>

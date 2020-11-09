@@ -19,7 +19,7 @@ export default {
 
 <style>
 #app {
-  margin: 20px auto;
+  margin: 0px auto;
   display: inline-block;
 }
 .calendar_app{  
