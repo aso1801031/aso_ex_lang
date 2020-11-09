@@ -47,12 +47,12 @@
             <div align="center">
                 
                 <!-- ログインボタン -->
-                <button onclick="" class="loginbtn_design mt-16">ログイン</button>
+                <button onclick="location.href='home'" class="loginbtn_design mt-16">ログイン</button>
 
                 <br>
 
                 <!-- 新規登録ボタン -->
-                <button onclick="location.href='search'" class="newbtn_design mt-16 mb-10">新規登録</button>
+                <button onclick="location.href='member-registration'" class="newbtn_design mt-16 mb-10">新規登録</button>
 
             </div>
 

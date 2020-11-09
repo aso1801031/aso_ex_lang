@@ -56,10 +56,10 @@
             <!-- ボタンエリア -->
             <div align="center" class="mt-16 pt-16">
                 <!-- 新規登録ボタン -->
-                <button onclick="" class="newbtn_design accent">新規登録</button>
+                <button onclick="location.href='home'" class="newbtn_design accent">新規登録</button>
                 <br>
                 <!-- ログインボタン -->
-                <button onclick="location.href='login'" class="returnbtn_design mt-16 accent">戻る</button>
+                <button onclick="location.href='member-registration'" class="returnbtn_design mt-16 accent">戻る</button>
                 
                 
             </div>
@@ -98,7 +98,7 @@
 /* テキストデザイン */
 .text_size {
     width: 100px;
-}
+} 
 /* テキストボックスデザイン */
 .text_design {
     height: 20%;
