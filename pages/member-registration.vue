@@ -14,11 +14,11 @@
             <div align=center>
                 <p class="erorr_message mr-16 pr-10">※E-mailを入力してください。</p>
                 <!-- E-mail未入力時(エラーメッセージ1) -->
-                <p v-if="email_flag=='1'" class="erorr_message mr-16 pr-10">※E-mailを入力してください。</p>
+                <!-- <p v-if="email_flag=='1'" class="erorr_message mr-16 pr-10">※E-mailを入力してください。</p> -->
                 <!-- 0文字または51文字以上の場合(エラーメッセージ2) -->
-                <p v-else-if="email_flag=='2'" class="erorr_message mr-16 pr-10">※1~50文字以内で入力してください。</p>
+                <!-- <p v-else-if="email_flag=='2'" class="erorr_message mr-16 pr-10">※1~50文字以内で入力してください。</p> -->
                 <!-- E-mailが有効でない(エラーメッセージ3) -->
-                <p v-else-if="email_flag=='3'" class="erorr_message mr-16 pr-10">※このE-mailがご利用できません。</p>
+                <!-- <p v-else-if="email_flag=='3'" class="erorr_message mr-16 pr-10">※このE-mailがご利用できません。</p> -->
             </div>
 
             <!-- Passwordエリア -->
@@ -29,9 +29,9 @@
             <div align=center>
                 <p class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
                 <!-- Password未入力時(エラーメッセージ1) -->
-                <p v-if="pass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
+                <!-- <p v-if="pass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p> -->
                 <!-- 0文字または51文字以上の場合(エラーメッセージ2) -->
-                <p v-else-if="pass_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p>
+                <!-- <p v-else-if="pass_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p> -->
             </div>
 
             <!-- Confirm Passwordエリア -->
@@ -42,11 +42,11 @@
             <div align=center>
                 <p class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
                 <!-- confirm Password未入力時(エラーメッセージ1) -->
-                <p v-if="Cpass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
+                <!-- <p v-if="Cpass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p> -->
                 <!-- 0文字または21文字以上の場合(エラーメッセージ2) -->
-                <p v-else-if="Cpass_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p>
+                <!-- <p v-else-if="Cpass_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p> -->
                 <!-- Passwordと違う場合(エラーメッセージ3) -->
-                <p v-else-if="Cpass_flag=='3'" class="erorr_message mr-16 pr-4">※Passwordと入力が違います。</p>
+                <!-- <p v-else-if="Cpass_flag=='3'" class="erorr_message mr-16 pr-4">※Passwordと入力が違います。</p> -->
             </div>
 
             <!-- Nameエリア -->
@@ -57,9 +57,9 @@
             <div align=center>
                 <p class="erorr_message mr-16 pr-10">※Nameを入力してください。</p>
                 <!-- Name未入力時(エラーメッセージ1) -->
-                <p v-if="name_flag=='1'" class="erorr_message mr-16 pr-4">※Nameを入力してください。</p>
+                <!-- <p v-if="name_flag=='1'" class="erorr_message mr-16 pr-4">※Nameを入力してください。</p> -->
                 <!-- 0文字または21文字以上の場合(エラーメッセージ2) -->
-                <p v-else-if="name_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p>
+                <!-- <p v-else-if="name_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p> -->
             </div>
 
             <!-- Languageエリア -->
@@ -80,7 +80,7 @@
             <div align=center>
                 <p class="erorr_message mr-16 pr-3">※Languageを選択してください。</p>
                 <!-- Language未選択時(エラーメッセージ1) -->
-                <p v-if="Lang_flag=='1'" class="erorr_message mr-16 pr-4">※Languageを選択する。</p>
+                <!-- <p v-if="Lang_flag=='1'" class="erorr_message mr-16 pr-4">※Languageを選択する。</p> -->
             </div>
 
             <!-- Profileエリア -->
@@ -92,7 +92,7 @@
             <div align=center>
                 <p class="erorr_message mr-9">※0~100文字以内で入力してください。</p>
                 <!-- 0文字または101文字以上の場合(エラーメッセージ1) -->
-                <p v-if="pro_flag=='1'" class="erorr_message mr-16 pr-4">※0~100文字以内で入力してください。</p>
+                <!-- <p v-if="pro_flag=='1'" class="erorr_message mr-16 pr-4">※0~100文字以内で入力してください。</p> -->
             </div>
 
             <!-- Imageエリア -->
