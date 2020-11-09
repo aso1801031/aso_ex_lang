@@ -14,7 +14,7 @@
 
             <!-- E-mailエラーエリア -->
             <div align=center class="pr-16 mr-16">
-                <!-- <p class="erorr_message">※E-mailを入力してください。</p> -->
+                <p class="erorr_message">※E-mailを入力してください。</p>
                 <!-- E-mail未入力時(エラーメッセージ1) -->
                 <p v-if="email_flag=='1'" class="erorr_message">※E-mailを入力してください。</p>
                 <!-- E-mail形式でない(エラーメッセージ2) -->
@@ -32,14 +32,14 @@
             <!-- Passwordエラーエリア -->
             <div>
                 <!-- password未入力時(エラーメッセージ) -->
-                <!-- <p class="erorr_message pr-10 mr-16" align="center">※Passwordを入力してください。</p> -->
+                <p class="erorr_message pr-10 mr-16" align="center">※Passwordを入力してください。</p>
                 <p v-if="pass_flag" class="erorr_message">※Passwordを入力してください。</p>
             </div>
 
             <!-- ログイン失敗エラーエリア -->
             <div>
                 <!-- ログイン失敗(エラーメッセージ) -->
-                <!-- <p class="erorr_message mt-10" align=center>メールアドレスまたはパスワードが違います</p> -->
+                <p class="erorr_message mt-10" align=center>メールアドレスまたはパスワードが違います</p>
                 <p v-if="login_flag" class="erorr_message mt-10">メールアドレスまたはパスワードが違います</p>
             </div>
 
