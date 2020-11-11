@@ -4,8 +4,7 @@
       <v-date-picker 
         locale="en"
         title-position="left">  
-        <template slot='header-title' slot-scope='props'>
-          {{props.monthLabel}}  {{props.yearLabel}}
+        <template slot='header-title'>
         </template>
         <!--
         <template slot='day-content' slot-scope='props'>

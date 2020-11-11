@@ -1,59 +1,63 @@
 <template>
     <div class="main_div">
-        <p class="search_title">search lesson!</p>
-        <v-container>
-            <!--フォーム-->
-            <v-form>
-                <v-row class="row_el_top">
-                    <v-col cols="12" md="5" class="element_left">
-                        <!--:rules="nameRules"-->
-                        <!--名前-->
-                        <v-text-field
-                        v-model="username"
-                        label="user"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="5" offset="2" class="element_right">
-                        <!--言語選択-->
-                        <v-select
-                        :items="items"
-                        label="languge"
-                        required></v-select>
-                    </v-col>
-                </v-row>
-                
-                <v-row class="row_el">
-                    <v-col cols="12" md="5" class="element_left">
-                        <!--時間-->
-                        <v-text-field
-                        v-model="time"
-                        label="time"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="12" md="5" offset="2" class="element_right">
-                        <!--日付-->
-                        <v-text-field
-                        v-model="date"
-                        label="date"
-                        ></v-text-field>    
-                    </v-col>
-                </v-row>
-                <!--検索ボタン-->
-                <div class="search_btn">
-                    <v-btn 
-                    class="accent"
-                    elevation="3"
-                    x-large
-                    @click="submit">
-                        Search
-                    </v-btn>              
-                </div>
-            </v-form>
-        </v-container>
+        <v-card 
+            elevation="2"
+            style="border-radius: 10px;">
+            <v-container class="search_card">
+                <p class="search_title">search lesson!</p>
+                <!--フォーム-->
+                <v-form>
+                    <v-row class="row_el_top">
+                        <v-col cols="12" md="5" class="element_left">
+                            <!--:rules="nameRules"-->
+                            <!--名前-->
+                            <v-text-field
+                            v-model="username"
+                            label="user"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="5" offset="2" class="element_right">
+                            <!--言語選択-->
+                            <v-select
+                            :items="items"
+                            label="languge"
+                            required></v-select>
+                        </v-col>
+                    </v-row>
+                    
+                    <v-row class="row_el">
+                        <v-col cols="12" md="5" class="element_left">
+                            <!--時間-->
+                            <v-text-field
+                            v-model="time"
+                            label="time"
+                            ></v-text-field>    
+                        </v-col>
+                        <v-col cols="12" md="5" offset="2" class="element_right">
+                            <!--日付-->
+                            <v-text-field
+                            v-model="date"
+                            label="date"
+                            ></v-text-field>    
+                        </v-col>
+                    </v-row>
+                    <!--検索ボタン-->
+                    <div class="search_btn">
+                        <v-btn 
+                        class="accent"
+                        elevation="3"
+                        x-large
+                        @click="submit">
+                            Search
+                        </v-btn>              
+                    </div>
+                </v-form>
+            </v-container>
+        </v-card>
         <v-card
-        class="mx-auto mt-8"
+        class="mx-auto mt-8 detail_card"
         style="border-radius: 10px;"
-        max-width="750"
+        elevation="2"
         outlined>
         <v-list-item one-line>
             <v-list-item-avatar
@@ -145,8 +149,13 @@
 
 <style>
     .main_div{
-        width: 70%;
+        width: 75%;
         margin: auto;
+    }
+    .search_card{
+        margin-top: 30px;
+        margin-bottom: 40px;
+        width: 85%;
     }
     .search_title{
         text-align: center;
@@ -171,10 +180,14 @@
     .search_btn{
         text-align: center;
         margin-top: 70px;
+        margin-bottom: 30px;
         letter-spacing: 0.5px;
     }
     .v-btn:not(.v-btn--round).v-size--x-large {
         min-width: 180px;
+    }
+    .detail_card{
+        margin: 0%;
     }
     .image_tile{
         margin-left: 20px;
