@@ -80,6 +80,7 @@
 /* 背景を指定 */
 .backarea {
     background-color: white; /* 背景色指定 */
+    border-radius: 0.3em; /* 角を丸める */
 }
 /* 改行キャンセルの呪文詠唱 */
 .nobr {
