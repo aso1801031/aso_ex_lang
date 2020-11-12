@@ -90,10 +90,13 @@
             </div>
 
             <!-- Imageエリア -->
-            <div class="nobr mt-16">
+            <div class="nobr mt-16 mr-16 pr-16">
                 <h3 class="text_size ml-16 pl-5" align=center>Image</h3>
                 <img :src="data.image" width="200" height="200" class="ml-16">
-                <input type="file" class="ml-10" accept='image/*' ref="file" @change="setImage"/>
+                <label class="label mr-16 ml-10">
+                    select your file
+                    <input type="file" class="ml-10" accept='image/*' ref="file" @change="setImage"/>
+                </label>
             </div>
 
             <!-- ボタンエリア -->
@@ -151,6 +154,18 @@ export default {
     align-items: center;
     justify-content: center;
     display: flex;
+}
+/* 画像のところ(「select your file」のところ) */
+label > input {
+ display: none;
+}
+.label {
+    border: solid none;
+    color:black; /* 文字の色 */
+    background-color: #dcdcdc;
+    text-decoration: none; /* 文字の下線を消す */
+    border-radius: 0.3em; /* 角を丸める */
+    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.5); /* 文字の影 */
 }
 /* テキストデザイン */
 .text_size {
