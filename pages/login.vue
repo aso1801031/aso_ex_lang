@@ -9,12 +9,11 @@
             <!-- E-mailエリア -->
             <div class="nobr mt-10">
                 <h3 class="text_size"> E-mail </h3>
-                <input type="text" class="text_design ml-6" placeholder="E-mail">
+                <input type="text" class="text_design ml-6" placeholder="E-mail"  v-model="email">
             </div>
 
             <!-- E-mailエラーエリア -->
             <div align=center class="pr-16 mr-16">
-                <p class="erorr_message">※E-mailを入力してください。</p>
                 <!-- E-mail未入力時(エラーメッセージ1) -->
                 <!-- <p v-if="email_flag=='1'" class="erorr_message">※E-mailを入力してください。</p> -->
                 <!-- E-mail形式でない(エラーメッセージ2) -->
@@ -26,20 +25,18 @@
             <!-- Passwordエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size">password </h3>
-                <input type="password" class="text_design ml-6" placeholder="password">
+                <input type="password" class="text_design ml-6" placeholder="password" v-model="password">
             </div>
 
             <!-- Passwordエラーエリア -->
             <div>
                 <!-- password未入力時(エラーメッセージ) -->
-                <p class="erorr_message pr-10 mr-16" align="center">※Passwordを入力してください。</p>
                 <!-- <p v-if="pass_flag" class="erorr_message">※Passwordを入力してください。</p> -->
             </div>
 
             <!-- ログイン失敗エラーエリア -->
             <div>
                 <!-- ログイン失敗(エラーメッセージ) -->
-                <p class="erorr_message mt-10" align=center>メールアドレスまたはパスワードが違います</p>
                 <!-- <p v-if="login_flag" class="erorr_message mt-10">メールアドレスまたはパスワードが違います</p> -->
             </div>
 
@@ -47,7 +44,7 @@
             <div align="center">
                 
                 <!-- ログインボタン -->
-                <button onclick="location.href='home'" class="loginbtn_design mt-16">ログイン</button>
+                <button class="loginbtn_design mt-16" type="submit" @click="login">ログイン</button>
 
                 <br>
 
@@ -68,6 +65,27 @@
     // var flag = '1';
     // var pass_flag = false;
     // var login_flag = false
+import firebase from '~/plugins/firebase'
+
+export default {
+    data() {
+        return {
+        email: '',
+        password: ''
+    }
+},
+methods : {
+    login() {
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+            .then(user => {
+                console.log('成功！')
+                location.href = "home";　// ログイン成功時、ホーム画面に遷移する
+            }).catch((error) => {
+                alert("ログイン情報がちがうお")
+            });
+        },
+    }
+}
 </script>
 
 <!-- スタイルを指定 -->
