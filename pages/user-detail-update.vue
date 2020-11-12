@@ -156,11 +156,6 @@
     width:70%;
     margin:auto;
 }
-/* 背景を指定 */
-.backarea {
-    background-color: white; /* 背景色指定 */
-    border-radius: 10px;
-}
 /* 改行キャンセルの呪文詠唱 */
 .nobr {
     align-items: center;

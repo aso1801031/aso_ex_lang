@@ -1,27 +1,43 @@
+<!--表示領域-->
 <template>
   <v-container>
     <v-row>
       <v-col cols=10></v-col>
+      <!--変更ボタン-->
       <v-col cols=2 class="text-left info">
         <form method="POST" id="change">
           <button class="accent btn-square-pop" type="submit" formaction="/profile/update" from="change">変更</button>
         </form>
       </v-col>
     </v-row>
+    <!--プロフィール表示領域-->
     <v-row>
       <v-col class="text-center info">
         <img　src=""　alt="noImage"　class="mb-5">
         <h1>{{name}}</h1>
-        <div id = "detail">
-          <p>Language : {{ Language }}</p>
-          <hr>
-          <p>Birth : {{ Birth }}</p>
-          <hr>
-          <p>profile : </p>
-          <hr>
-          <p>{{ profile }}</p>
+        <div class="main_div">
+          <v-card 
+              elevation="2"
+              style="border-radius: 10px;">
+            <v-row>
+              <v-col md="3" offset="2">Language : </v-col>
+              <v-col md="5">{{ Language }}</v-col>
+            </v-row>
+            <hr>
+            <v-row>
+              <v-col md="3" offset="2">Birth : </v-col>
+              <v-col md="5">{{ Birth }}</v-col>
+            </v-row>
+            <hr>
+            <v-row>
+              <v-col>profile : </v-col>
+            </v-row>
+            <hr>
+            <v-row>
+              <v-col>{{ profile }}</v-col>
+            </v-row>
+          </v-card>
         </div>
-      
       </v-col>
     </v-row>
   </v-container>
@@ -44,12 +60,9 @@
 </router>
 
 <style>
-#detail {
-    border-radius: 10px;
-    background-color: white;
-    padding:15px;
-    width:50%;
-    margin: auto;
+.main_div{
+    width:60%;
+    margin:auto;
 }
 hr{
     width:80%;
