@@ -29,7 +29,7 @@
                             />
                             <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
                                 <p class="preview-item-name">{{ img_name }}</p>
-                                <e-icon class="preview-item-icon">change image</e-icon>
+                                <p class="preview-item-icon">change image</p>
                             </div>
                         </div>
                     </v-col>
@@ -112,6 +112,8 @@
         items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
         time: '',
         date: '',
+        name: '',
+        text: '',
         /*nameRules: [
           v => !!v || 'Name is required',
           //v => v.length <= 10 || 'Name must be less than 10 characters',
