@@ -12,7 +12,6 @@
                 <input type="email" class="text_design ml-6" placeholder="E-mail">
             </div>
             <div align=center>
-                <p class="erorr_message mr-16 pr-10">※E-mailを入力してください。</p>
                 <!-- E-mail未入力時(エラーメッセージ1) -->
                 <!-- <p v-if="email_flag=='1'" class="erorr_message mr-16 pr-10">※E-mailを入力してください。</p> -->
                 <!-- 0文字または51文字以上の場合(エラーメッセージ2) -->
@@ -27,7 +26,6 @@
                 <input type="password" class="text_design ml-6" placeholder="Password">
             </div>
             <div align=center>
-                <p class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
                 <!-- Password未入力時(エラーメッセージ1) -->
                 <!-- <p v-if="pass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p> -->
                 <!-- 0文字または51文字以上の場合(エラーメッセージ2) -->
@@ -40,7 +38,6 @@
                 <input type="password" class="text_design ml-6" placeholder="Confirm Password">
             </div>
             <div align=center>
-                <p class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p>
                 <!-- confirm Password未入力時(エラーメッセージ1) -->
                 <!-- <p v-if="Cpass_flag=='1'" class="erorr_message mr-16 pr-4">※Passwordを入力してください。</p> -->
                 <!-- 0文字または21文字以上の場合(エラーメッセージ2) -->
@@ -55,7 +52,6 @@
                 <input type="text" class="text_design ml-6" placeholder="Name">
             </div>
             <div align=center>
-                <p class="erorr_message mr-16 pr-10">※Nameを入力してください。</p>
                 <!-- Name未入力時(エラーメッセージ1) -->
                 <!-- <p v-if="name_flag=='1'" class="erorr_message mr-16 pr-4">※Nameを入力してください。</p> -->
                 <!-- 0文字または21文字以上の場合(エラーメッセージ2) -->
@@ -78,7 +74,6 @@
                 </select>
             </div>
             <div align=center>
-                <p class="erorr_message mr-16 pr-3">※Languageを選択してください。</p>
                 <!-- Language未選択時(エラーメッセージ1) -->
                 <!-- <p v-if="Lang_flag=='1'" class="erorr_message mr-16 pr-4">※Languageを選択する。</p> -->
             </div>
@@ -90,7 +85,6 @@
                 <textarea cols="54" rows="5" class="textarea_design ml-6"></textarea>
             </div>
             <div align=center>
-                <p class="erorr_message mr-9">※0~100文字以内で入力してください。</p>
                 <!-- 0文字または101文字以上の場合(エラーメッセージ1) -->
                 <!-- <p v-if="pro_flag=='1'" class="erorr_message mr-16 pr-4">※0~100文字以内で入力してください。</p> -->
             </div>
