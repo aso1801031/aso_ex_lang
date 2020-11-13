@@ -82,21 +82,22 @@
 // 「plugins/firebase」をimport
 import firebase from '~/plugins/firebase'
 
-    export default {
+export default {
+    layout:"default2",
     data () {
-    return {
-        user: {
-            admin_flg: "false",
-            birth: "2000/03/30",
-            imagepass: "1",
-            language_id: "1",
-            mailadress: "1801006@s.asojuku.ac.jp",
-            name: "浦川 大輝",
-            password: "123456789",
-            profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
+        return {
+            user: {
+                admin_flg: "false",
+                birth: "2000/03/30",
+                imagepass: "1",
+                language_id: "1",
+                mailadress: "1801006@s.asojuku.ac.jp",
+                name: "浦川 大輝",
+                password: "123456789",
+                profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
 
-        },
-    }
+            },
+        }
     },
     methods: {
         submit () {
