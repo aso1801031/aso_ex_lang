@@ -20,7 +20,7 @@
                             <!--言語選択-->
                             <v-select
                             :items="items"
-                            label="languge"
+                            label="language"
                             required></v-select>
                         </v-col>
                     </v-row>
