@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@nuxtjs/router-extras": "^1.1.0",
-    "@nuxtjs/vuetify": "^1.11.2"
+    "@nuxtjs/vuetify": "^1.11.2",
+    "vuex-persistedstate": "^4.0.0-beta.1"
   }
 }
