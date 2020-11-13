@@ -26,6 +26,10 @@
 
           </nuxt-link>
       </div>
+      <div>
+        <button onclick="location.href='login" @click="logout">ログアウト</button>
+        <img src="@/assets/logout.png" width='16px' height="16px">
+      </div>
 
 
     </v-app-bar>
@@ -44,6 +48,7 @@
 </template>
 
 <script>
+import firebase from '~/plugins/firebase'
 export default {
   data () {
     return {
@@ -75,7 +80,13 @@ export default {
           icon: require('@/assets/profile.png'),
           title: 'プロフィール',
           to: '/profile'
-        }
+        },
+
+        /* {
+          icon: require('@/assets/logout.png'),
+          title: 'ログアウト',
+          to: '/login'
+        } */
 
       ],
       miniVariant: false,
@@ -83,6 +94,15 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+  methods: {
+    logout() {
+      firebase.auth().signOut().then(function() {
+        console.log("signout")
+      }).catch(function(error) {
+        // An error happened.
+      });
+    } 
   }
 }
 </script>

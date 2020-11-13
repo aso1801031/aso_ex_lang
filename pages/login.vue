@@ -66,8 +66,8 @@
     // var pass_flag = false;
     // var login_flag = false
 import firebase from '~/plugins/firebase'
-
 export default {
+    layout:"default2",
     data() {
         return {
         email: '',

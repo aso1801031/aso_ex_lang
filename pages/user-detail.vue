@@ -43,6 +43,17 @@
   </v-container>
 </template>
 <script>
+    import firebase from '~/plugins/firebase'
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        // サインインしていない状態
+        // サインイン画面に遷移する等
+        // 例:
+        location.href = '/login';
+      } else {
+        // サインイン済み
+      }
+    });
     export default {
         data: function(){
             return{
