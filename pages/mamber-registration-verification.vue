@@ -9,7 +9,7 @@
             <!-- E-mailエリア -->
             <div class="nobr mt-10">
                 <h3 class="text_size mr-16" align=center>E-mail</h3>
-                <p class="text_design ml-16 pt-3">1801000@s.asojuku.ac.jp</p>
+                <p class="text_design ml-16 pt-3">1801006@s.asojuku.ac.jp</p>
             </div>
 
             <!-- Passwordエリア -->
@@ -27,7 +27,13 @@
             <!-- Nameエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Name</h3>
-                <p class="text_design ml-16 pt-3">麻生　太郎</p>
+                <p class="text_design ml-16 pt-3">浦川 大輝</p>
+            </div>
+
+            <!-- Birthエリア -->
+            <div class="nobr mt-16">
+                <h3 class="text_size mr-16" align=center>Birth</h3>
+                <p class="text_design ml-16 pt-3">2000/03/30</p>
             </div>
             
             <!-- Languageエリア -->
@@ -56,7 +62,8 @@
             <!-- ボタンエリア -->
             <div align="center" class="mt-16 pt-16">
                 <!-- 新規登録ボタン -->
-                <button onclick="location.href='home'" class="newbtn_design accent">新規登録</button>
+                <!-- <button onclick="location.href='home'" class="newbtn_design accent" @click="submit">新規登録</button> -->
+                <button @click="submit" class="newbtn_design accent">新規登録</button>
                 <br>
                 <!-- ログインボタン -->
                 <button onclick="location.href='member-registration'" class="returnbtn_design mt-16 accent">戻る</button>
@@ -72,8 +79,65 @@
 
 <!-- データ操作 -->
 <script>
+// 「plugins/firebase」をimport
+import firebase from '~/plugins/firebase'
 
-</script>
+    export default {
+    data () {
+    return {
+        user: {
+            admin_flg: "false",
+            birth: "2000/03/30",
+            imagepass: "1",
+            language_id: "1",
+            mailadress: "1801006@s.asojuku.ac.jp",
+            name: "浦川 大輝",
+            password: "123456789",
+            profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
+
+        },
+    }
+    },
+    methods: {
+        submit () {
+            // firebaseのuserテーブルに情報を追加
+            // firebaseのコレクションを指定
+            const db = firebase.firestore()
+            let dbUsers = db.collection('users')
+            dbUsers
+            .add({
+                admin_flg: "false",
+                birth: "2000/03/30",
+                imagepass: "1",
+                language_id: "1",
+                mailadress: "1801006@s.asojuku.ac.jp",
+                name: "浦川 大輝",
+                password: "123456789",
+                profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
+
+
+            })
+            .then(ref => {
+                console.log('Add ID: ', ref.id)
+                console.log(this.mailadress)
+                
+            })
+
+            // firebase authに情報を追加(メールアドレス,パスワード)
+            firebase.auth().createUserWithEmailAndPassword("1801006@s.asojuku.ac.jp","123456789")
+                .then(ok => { 
+                    console.log("Register OK", ok); 
+                    location.href = "login";
+                }, 
+                error => { 
+                    console.log("Register error", error); 
+                });
+                
+
+            },
+        },
+    }
+    </script>
 
 <!-- スタイルを指定 -->
 <style scoped>
