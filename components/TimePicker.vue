@@ -24,7 +24,6 @@
     <v-time-picker
       v-if="menu2"
       v-model="picker"
-      full-width
       @click:minute="$refs.menu.save(time)"
       :allowed-times='allowedTime'
     ></v-time-picker>

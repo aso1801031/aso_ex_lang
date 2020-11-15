@@ -51,7 +51,7 @@
         </v-col>
         <v-col cols="4" align='center'>
           <v-select
-            :items="['English','Spanish','Japanese']"
+            :items="languageList"
             v-model="language"
             label="language"
             clearable
@@ -93,7 +93,8 @@
 <script>
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
-
+import firebase from '~/plugins/firebase'
+var db = firebase.firestore();
 
 
 export default {
@@ -119,6 +120,7 @@ export default {
           return true
           }
       ],
+      languageList:[],
       languageflg:null,
       languagerules:[
         value => {
@@ -146,12 +148,28 @@ export default {
 
     }
   },
+  created(){
+    db.collection('languages').get().then((query) => {
+      var flag = 0
+      query.forEach(element => {
+        var data = element.data()
+        console.log(data.name)
+        this.languageList.push(data.name)
+        console.log(this.languageList)
+        flag++
+        console.log(element.id)
+      });
+    }).catch((error=>{
+      console.log(error)
+    }));
+
+  },
   computed:{
     title: {
-      get: function(){//この中の変数の値が変化した時
+      get: function(){
         return this.$store.state.lesson.title
       },
-      set:function(newValue){//titleの値が変化した時
+      set:function(newValue){
         this.a = newValue
         this.$store.commit('lesson/title',this.a)
         console.log(this.title)
