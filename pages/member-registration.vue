@@ -9,7 +9,7 @@
             <!-- E-mailエリア -->
             <div class="nobr mt-10">
                 <h3 class="text_size mr-6" align=center>E-mail</h3>
-                <input type="email" class="text_design ml-6" placeholder="E-mail">
+                <input type="email" class="text_design ml-6" placeholder="E-mail" v-model="mailadress" />
             </div>
             <div align=center>
                 <!-- E-mail未入力時(エラーメッセージ1) -->
@@ -23,7 +23,7 @@
             <!-- Passwordエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-6" align=center>Password</h3>
-                <input type="password" class="text_design ml-6" placeholder="Password">
+                <input type="password" class="text_design ml-6" placeholder="Password" v-model="password" />
             </div>
             <div align=center>
                 <!-- Password未入力時(エラーメッセージ1) -->
@@ -49,7 +49,7 @@
             <!-- Nameエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-6" align=center>Name</h3>
-                <input type="text" class="text_design ml-6" placeholder="Name">
+                <input type="text" class="text_design ml-6" placeholder="Name" v-model="name" />
             </div>
             <div align=center>
                 <!-- Name未入力時(エラーメッセージ1) -->
@@ -58,10 +58,19 @@
                 <!-- <p v-else-if="name_flag=='2'" class="erorr_message mr-16 pr-4">※1~20文字以内で入力してください。</p> -->
             </div>
 
+            <!-- Birthエリア -->
+            <div class="nobr mt-16">
+                <h3 class="text_size mr-6" align=center>Birth</h3>
+                <input type="text" class="text_design ml-6" placeholder="Birth" v-model="birth" />
+            </div>
+            <div align=center>
+                
+            </div>
+
             <!-- Languageエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-6" align=center>Language</h3>
-                <select name="" class="text_design ml-6">
+                <select class="text_design ml-6" v-model="language_id">
                     <option value="null">言語を選択してください</option>
                     <option value="ja">Japanese</option>
                     <option value="en">English</option>
@@ -82,7 +91,7 @@
             <div class="nobr mt-16">
                 <h3 class="text_size mr-6" align=center>Profile</h3>
                 <!-- <input type="text" class="text_design ml-6" placeholder="Profile"> -->
-                <textarea cols="54" rows="5" class="textarea_design ml-6"></textarea>
+                <textarea cols="54" rows="5" class="textarea_design ml-6" v-model="profile" />
             </div>
             <div align=center>
                 <!-- 0文字または101文字以上の場合(エラーメッセージ1) -->
@@ -102,7 +111,7 @@
             <!-- ボタンエリア -->
             <div align="center" class="mt-16">
                 <!-- 新規登録ボタン -->
-                <button onclick="location.href='mamber-registration-verification'" class="newbtn_design accent">新規登録</button>
+                <button class="newbtn_design accent" @click="changAll">新規登録</button>
                 <br>
                 <!-- ログインボタン -->
                 <button onclick="location.href='login'" class="returnbtn_design mt-16 accent">戻る</button>
@@ -138,6 +147,17 @@ export default {
                     this.data.type = fileImg.type;
             }
         },
+        changAll() {
+            
+            this.$store.commit("changMailadress", this.mailadress);
+            this.$store.commit("changPassword", this.password);
+            this.$store.commit("changName", this.name);
+            this.$store.commit("changLanguage_id", this.language_id);
+            this.$store.commit("changProfile", this.profile);
+            this.$store.commit("changBirth", this.birth);
+            // alert($store.state.mailadress);
+            location.href = "mamber-registration-verification";
+        }
 
     }
 };
