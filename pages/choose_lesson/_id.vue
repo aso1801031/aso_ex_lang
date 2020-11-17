@@ -55,7 +55,7 @@
                 <div class="quickSand ml-5" style="">{{text}}</div>
               </v-col>
               <v-col cols="7"  align="right">
-                <v-btn class="accent mr-5" elevation="0" large width="200">参加</v-btn>
+                <v-btn class="accent mr-5" elevation="0" large width="200" to="/home" nuxt>参加</v-btn>
               </v-col>
             </v-row>
             <!-- カード下部_end -->

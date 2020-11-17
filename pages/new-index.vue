@@ -8,7 +8,7 @@
             <v-sheet color=rgb(255,255,255,0.0) :height="sheetHeightAll" width="100%" class="background">
               <!-- 　アプリ名（左上に表示） -->
               <div class="quickSand info--text pl-3" style="font-size:25px;">Aso Language App</div>
-              <v-sheet color=rgb(255,255,255,0.0) :height="500" width="100%">
+              <v-sheet color=rgb(255,255,255,0.0) :height="600" width="100%">
 
 
                 <v-row class="pl-5 pt-10 " >
