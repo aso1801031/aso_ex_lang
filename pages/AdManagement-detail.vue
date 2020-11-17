@@ -89,7 +89,7 @@
 </script>
 
 <router>
-  path: '/profile'
+  path: '/AdManagement/detail'
 </router>
 
 <style>

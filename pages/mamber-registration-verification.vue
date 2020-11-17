@@ -9,47 +9,43 @@
             <!-- E-mailエリア -->
             <div class="nobr mt-10">
                 <h3 class="text_size mr-16" align=center>E-mail</h3>
-                <p class="text_design ml-16 pt-3">1801006@s.asojuku.ac.jp</p>
+                <p class="text_design ml-16 pt-3">{{ $store.state.mailadress }}</p>
             </div>
 
             <!-- Passwordエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Password</h3>
-                <p class="text_design ml-16 pt-3">*************</p>
+                <p class="text_design ml-16 pt-3">{{ $store.state.password }}</p>
             </div>
             
             <!-- Confirm Passwordエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Confirm Password</h3>
-                <p class="text_design ml-16 pt-3">*************</p>
+                <p class="text_design ml-16 pt-3">{{ $store.state.password }}</p>
             </div>
             
             <!-- Nameエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Name</h3>
-                <p class="text_design ml-16 pt-3">浦川 大輝</p>
+                <p class="text_design ml-16 pt-3">{{ $store.state.name }}</p>
             </div>
 
             <!-- Birthエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Birth</h3>
-                <p class="text_design ml-16 pt-3">2000/03/30</p>
+                <p class="text_design ml-16 pt-3">{{ $store.state.birth }}</p>
             </div>
             
             <!-- Languageエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Language</h3>
-                <p class="text_design ml-16 pt-3">Japanese</p>
+                <p class="text_design ml-16 pt-3">{{$store.state.language_id}}</p>
             </div>
 
             <!-- Profileエリア -->
             <div class="nobr mt-16">
                 <h3 class="text_size mr-16" align=center>Profile</h3>
-                <p class="text_design ml-16 pt-3">
-                    あいうえおかきくけこさしすせそたちつてと
-                    <br>
-                    なにぬねのはひふへほまみむめもやゆよ
-                </p>
+                <p class="text_design ml-16 pt-3">{{$store.state.profile}}</p>
             </div>
 
             <!-- Imageエリア -->
@@ -87,20 +83,21 @@ export default {
     data () {
         return {
             user: {
-                admin_flg: "false",
-                birth: "2000/03/30",
-                imagepass: "1",
-                language_id: "1",
-                mailadress: "1801006@s.asojuku.ac.jp",
-                name: "浦川 大輝",
-                password: "123456789",
-                profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
+                admin_flg: "",
+                birth: "",
+                imagepass: "",
+                language_id: "",
+                mailadress: "",
+                name: "",
+                password: "",
+                profile: "",
 
             },
         }
     },
     methods: {
         submit () {
+            // alert(this.$store.state.mailadress);
             // firebaseのuserテーブルに情報を追加
             // firebaseのコレクションを指定
             const db = firebase.firestore()
@@ -108,13 +105,13 @@ export default {
             dbUsers
             .add({
                 admin_flg: "false",
-                birth: "2000/03/30",
+                birth: this.$store.state.birth,
                 imagepass: "1",
-                language_id: "1",
-                mailadress: "1801006@s.asojuku.ac.jp",
-                name: "浦川 大輝",
-                password: "123456789",
-                profile: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよ",
+                language_id: this.$store.state.language_id,
+                mailadress: this.$store.state.mailadress,
+                name: this.$store.state.name,
+                password: this.$store.state.password,
+                profile: this.$store.state.profile,
 
 
             })
@@ -125,7 +122,7 @@ export default {
             })
 
             // firebase authに情報を追加(メールアドレス,パスワード)
-            firebase.auth().createUserWithEmailAndPassword("1801006@s.asojuku.ac.jp","123456789")
+            firebase.auth().createUserWithEmailAndPassword(this.$store.state.mailadress,this.$store.state.password)
                 .then(ok => { 
                     console.log("Register OK", ok); 
                     location.href = "login";
