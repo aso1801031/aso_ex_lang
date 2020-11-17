@@ -20,6 +20,7 @@
         </template>
         <client-only>
           <v-date-picker
+            full-width
             v-model="picker"
             @input="menu2 = false"
             :allowed-dates='allowedDate'
