@@ -16,18 +16,18 @@
                 <v-row>
                     <v-col cols="12"  md="6">
                         <!--タイトル-->
-                        <p class="card_title">Title</p>
+                        <p class="card_title">{{title}}</p>
                     </v-col>
                     <v-col cols="12" md="5" offset="1" class="info_div">
                         <!--ユーザー情報-->
                         <v-list-item-subtitle>
-                            <p class="info_ele">Language : Japanese</p>
+                            <p class="info_ele">Language : {{language}}</p>
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
-                            <p class="info_ele">Date : 2020/11/07</p>
+                            <p class="info_ele">Date : {{date}}</p>
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
-                            <p class="info_ele">Time : 15:30</p>
+                            <p class="info_ele">Time : {{time}}</p>
                         </v-list-item-subtitle>
                     </v-col>
                 </v-row>
@@ -46,7 +46,7 @@
         -->
         <div class="under_div">
             <div>
-                <p class="card_profile">Hello! I'm Japanese! nice too meet you!</p>
+                <p class="card_profile">{{text}}</p>
             </div>
                 <div class="under_btn">
                     <v-btn 
@@ -60,6 +60,38 @@
         </div>
     </v-card>    
 </template>
+
+<script>
+    import firebase from '~/plugins/firebase'
+    export default {
+        data (){
+        return{
+            title: "",
+            language: "",
+            date: "",
+            time: "",
+            text: "",
+            id:this.$route.params.id
+            
+        }
+        },
+        async created () {
+        if(this.id != null){
+            firebase.firestore().collection('lessons').doc(this.id).get().then(
+            doc => {
+            doc.data().language_id.get().then(res => { 
+                this.language = res.data().name
+                this.title = (doc.data().title)
+                
+                this.date = (doc.data().lesson_date)
+                this.time = (doc.data().lesson_time)
+                this.text = (doc.data().detail)
+            })
+            })
+        }
+        },
+    }
+</script>
 
 <style>
     .image_tile{
