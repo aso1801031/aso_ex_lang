@@ -10,6 +10,7 @@ export const state = () =>({
     password: "",
     profile: "",
     birth: "",
+    id:"",
   })
   
   
@@ -43,5 +44,8 @@ export const state = () =>({
     changBirth(state, birth) {
       state.birth = birth
     },
+    changId(state, id){
+      state.id = id
+    }
   }
   

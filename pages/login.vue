@@ -79,6 +79,15 @@ methods : {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
             .then(user => {
                 console.log('成功！')
+                firebase.firestore().collection('users').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        if(doc.data().mailadress === this.email){
+                            console.log(doc.id, " => ", doc.data());
+                            this.$store.commit("changId", doc.id);
+                        }
+                    })
+                })
+                //console.log("id",this.$store.state.id)
                 location.href = "home";　// ログイン成功時、ホーム画面に遷移する
             }).catch((error) => {
                 alert("ログイン情報がちがうお")

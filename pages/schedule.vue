@@ -7,12 +7,12 @@
     :weekday-format="getDay"
     v-model="picker"
     />
-      <h4 class="mt-3">{{l_date}}</h4>
-      <div v-for="allLesson of allLessons" v-if="allLesson.lesson_date == l_date">
-        <p class="lesson_time">{{ allLesson.lesson_time }}</p>
-        <a v-bind:href="url"><p class="lesson_title">{{allLesson.title}}</p></a>
-      </div>
-  </div>
+    <h4 class="mt-3">{{l_date}}</h4>
+    <div v-for="allLesson of allLessons" :key="allLesson.title" v-if="allLesson.lesson_date == l_date">
+      <p class="lesson_time">{{ allLesson.lesson_time }}</p>
+      <a v-bind:href="getLessonDate(allLesson.lesson_time)"><p class="lesson_title"></p>{{allLesson.title}}</p></a>
+    </div>
+</div>
 </template>
 
 <script>
@@ -21,9 +21,10 @@ import firebase from '~/plugins/firebase'
 export default {
   data() {
     return {
-      url:"/schedule-detail/",
+      url:"",
       l_date: null,
       allLessons: [],
+      lessonIds:[],
     };
   },
   computed: {
@@ -34,7 +35,7 @@ export default {
       set(val) {
         this.l_date = val;
       }
-    }
+    },
   },
   methods:{
     getDay(date){
@@ -42,30 +43,29 @@ export default {
       let i = new Date(date).getDay(date)
       return daysOfWeek[i]
     },
-    getLessonDate(){
-      firebase.firestore().collection('lessons').get().then(snapshot => {
-      snapshot.forEach(doc => {
-        //this.allLessons.push(doc.data())
-
-        console.log(doc.data().lesson_date+"と"+this.l_date);
-        /*if(doc.data().lesson_date == l_date){
-          console.log(doc.data().lesson_date);
-          this.url += doc.id
-        }*/
-      })
-    })
+    getLessonDate(l_time){
+      this.url="/schedule-detail/"
+      for(var i = 0; i < this.allLessons.length; i++){
+        //console.log(this.allLessons[i].lesson_date,this.l_date)
+        if(this.allLessons[i].lesson_date === this.l_date && 
+        this.allLessons[i].lesson_time === l_time){
+          return this.url+this.lessonIds[i]
+        }
+      }
+      return
     }
   },
   created:function () {
     firebase.firestore().collection('lessons').get().then(snapshot => {
       snapshot.forEach(doc => {
-        this.allLessons.push(doc.data())
-
-        console.log(doc.data().lesson_date+"と"+this.l_date);
-        /*if(doc.data().lesson_date == l_date){
-          console.log(doc.data().lesson_date);
-          this.url += doc.id
-        }*/
+        doc.data().teacher_id.get().then(res => { 
+          //this.language = res.data().name
+          if(res.id === this.$store.state.id){
+            //console.log(res.id,doc.id)
+            this.allLessons.push(doc.data())
+            this.lessonIds.push(doc.id)
+          }
+        })
       })
     })
   },
