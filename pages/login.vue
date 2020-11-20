@@ -1,149 +1,136 @@
-<!-- 表示内容 -->
 <template>
+    <div class="main_div mt-16">
+        <v-card 
+            elevation="2"
+            style="border-radius: 10px;"
+            class="pr-16 pl-16"
+            >
+            <v-container class="signup_card pt-16">
+                <!--form-->
+                <v-form>
+                    <!-- e-mail  -->
+                    <v-row>
+                        <v-col cols="12" md="4" align=center>
+                            <h3 class="mt-5">E-mail</h3>
+                        </v-col>
+                        <v-col cols="12" md="8">
+                            <v-text-field
+                            v-model="mailadress"
+                            label="E-mail"
+                            type="email"
 
-    <section>
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <!-- password -->
+                    <v-row>
+                        <v-col cols="12" md="4" align=center>
+                            <h3 class="mt-10">Password</h3>
+                        </v-col>
+                        <v-col cols="12" md="8">
+                            <v-text-field
+                            v-model="password"
+                            label="password"
+                            type="password"
+                            class="mt-5"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
 
-        <!-- 背景エリア -->
-        <div class="backarea mt-10 pt-16 pb-16">
-            
-            <!-- E-mailエリア -->
-            <div class="nobr mt-10">
-                <h3 class="text_size"> E-mail </h3>
-                <input type="text" class="text_design ml-6" placeholder="E-mail"  v-model="email">
-            </div>
 
-            <!-- E-mailエラーエリア -->
-            <div align=center class="pr-16 mr-16">
-                <!-- E-mail未入力時(エラーメッセージ1) -->
-                <!-- <p v-if="email_flag=='1'" class="erorr_message">※E-mailを入力してください。</p> -->
-                <!-- E-mail形式でない(エラーメッセージ2) -->
-                <!-- <p v-else-if="email_flag=='2'" class="erorr_message">※E-mailの形式で入力してください。</p> -->
-                <!-- E-mailが有効でない(エラーメッセージ3) -->
-                <!-- <p v-else-if="email_flag=='3'" class="erorr_message">※このE-mailがご利用できません。</p> -->
-            </div>
+                    <!--signup_btn-->
+                    <div class="signup_btn mb-16 mt-10" align=center>
+                        <v-btn 
+                        class="accent"
+                        elevation="3"
+                        height="60"
+                        width="240"
+                        x-large
+                        @click="login">
+                            login
+                        </v-btn>              
+                    </div>
+                    <!--return_btn-->
+                    <div class="return_btn mb-10">
+                        <v-btn 
+                        class="accent"
+                        elevation="3"
+                        large
+                        height="40"
+                        width="120"
+                        @click="signup">
+                            sign up
+                        </v-btn>              
+                    </div>
+                </v-form>
+            </v-container>
+        </v-card>  
+    </div>
+</template>
 
-            <!-- Passwordエリア -->
-            <div class="nobr mt-16">
-                <h3 class="text_size">password </h3>
-                <input type="password" class="text_design ml-6" placeholder="password" v-model="password">
-            </div>
-
-            <!-- Passwordエラーエリア -->
-            <div>
-                <!-- password未入力時(エラーメッセージ) -->
-                <!-- <p v-if="pass_flag" class="erorr_message">※Passwordを入力してください。</p> -->
-            </div>
-
-            <!-- ログイン失敗エラーエリア -->
-            <div>
-                <!-- ログイン失敗(エラーメッセージ) -->
-                <!-- <p v-if="login_flag" class="erorr_message mt-10">メールアドレスまたはパスワードが違います</p> -->
-            </div>
-
-            <!-- ボタンエリア -->
-            <div align="center">
-                
-                <!-- ログインボタン -->
-                <button class="loginbtn_design mt-16" type="submit" @click="login">ログイン</button>
-
-                <br>
-
-                <!-- 新規登録ボタン -->
-                <button onclick="location.href='member-registration'" class="newbtn_design mt-16 mb-10">新規登録</button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</template> 
-
-<!-- データ操作 -->
 <script>
-    // 内部処理できてないお♡
-    // var flag = '1';
-    // var pass_flag = false;
-    // var login_flag = false
 import firebase from '~/plugins/firebase'
-export default {
-    layout:"default2",
-    data() {
-        return {
-        email: '',
-        password: ''
-    }
-},
-methods : {
-    login() {
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-            .then(user => {
-                console.log('成功！')
-                firebase.firestore().collection('users').get().then(snapshot => {
-                    snapshot.forEach(doc => {
-                        if(doc.data().mailadress === this.email){
+    export default {
+        layout:"default2",
+        data() {
+            return {
+            mailadress: '',
+            password: ''
+            }   
+        },
+        methods:{
+            login:function(){
+                firebase.auth().signInWithEmailAndPassword(this.mailadress, this.password)
+                    .then(user => {
+                        console.log('成功！')
+                        firebase.firestore().collection('users').get().then(snapshot => {
+                        snapshot.forEach(doc => {
+                        if(doc.data().mailadress === this.mailadress){
                             console.log(doc.id, " => ", doc.data());
                             this.$store.commit("changId", doc.id);
                         }
                     })
                 })
-                //console.log("id",this.$store.state.id)
                 location.href = "home";　// ログイン成功時、ホーム画面に遷移する
-            }).catch((error) => {
-                alert("ログイン情報がちがうお")
-            });
-        },
+                }).catch((error) => {
+                    alert("ログイン情報がちがうお")
+                });
+            },
+            signup:function(){
+                location.href = "member-registration";
+            }
+
+        }
     }
-}
 </script>
 
-<!-- スタイルを指定 -->
-<style scoped>
-/* 背景を指定 */
-.backarea {
-    background-color: white; /* 背景色指定 */
-    border-radius: 0.3em; /* 角を丸める */
-}
-.nobr{
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-/* テキストサイズを指定(テキストボックスを揃える為) */
-.text_size{
-    width: 100px; 
-}
-/* テキストボックスデザイン */
-.text_design {
-    height: 20%;
-    width: 40%;
-    border-bottom: 1px solid #dcdcdc; /* 下線指定 */
-}
-/* ボタンデザイン */
-.loginbtn_design{
-    width:30%;
-    padding: 2%;
-    background-color: #20b2aa; /* 背景色 */
-    color: white; /* 文字の色 */
-    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2); /* 文字の影 */
-    font-weight: bold; /* 文字の太さ */
-    text-decoration: none; /* 文字の下線を消す */
-    border-radius: 0.3em; /* 角を丸める */
-}   
-.newbtn_design{
-    width:20%;
-    height: 10%;
-    padding: 10px;
-    background-color: #20b2aa; /* 背景色 */
-    color: white; /* 文字の色 */
-    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.2); /* 文字の影 */
-    font-weight: bold; /* 文字の太さ */
-    text-decoration: none; /* 文字の下線を消す */
-    border-radius: 0.3em; /* 角を丸める */
-}   
-.erorr_message {
-    color: red;
-    font-weight: bolder
-}
-
+<style>
+    .main_div{
+        width: 75%; 
+        margin: auto;
+    }
+    .signup_card{
+        margin-top: 30px;
+        margin-bottom: 40px;
+        width: 85%;
+    }
+    .signup_btn{
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+    .return_btn{
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+    .v-btn:not(.v-btn--round).v-size--x-large {
+        min-width: 180px;
+    }
+    .detail_card{
+        margin: 0%;
+    }
+    .image_tile{
+        margin-left: 20px;
+        border-radius: 10px;
+    }
 </style>
+  
