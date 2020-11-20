@@ -92,7 +92,7 @@ export default {
       self.mail = user.email
       console.log(self.mail)
 
-      db.collection("users").where('mailaddress' , "==" , self.mail).get().then((query) => {
+      db.collection("users").where('mailadress' , "==" , self.mail).get().then((query) => {
       query.forEach(element => {
         self.teach = element.id
         console.log(element.data())
