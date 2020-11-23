@@ -5,6 +5,7 @@
     no-title
     elevation="3"
     :weekday-format="getDay"
+    :allowed-dates='allowedDate'
     v-model="picker"
     />
     <h4 class="mt-3">{{l_date}}</h4>
@@ -53,7 +54,26 @@ export default {
         }
       }
       return
-    }
+    },
+    allowedDate:function(val){
+      let today = new Date()
+      this.date = today.getDate()
+      today = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      )
+      let maxAllowedDay = new Date()
+      maxAllowedDay.setDate(
+        today.getDate() + 100
+      )
+      maxAllowedDay = new Date(
+        maxAllowedDay.getFullYear(),
+        maxAllowedDay.getMonth(),
+        maxAllowedDay.getDate()
+      )
+      return today <= new Date(val) //&& new Date(val) <= maxAllowedDay
+     },
   },
   created:function () {
     firebase.firestore().collection('lessons').get().then(snapshot => {
@@ -68,8 +88,9 @@ export default {
         })
       })
     })
+    console.log(this.$store.state.id)
   },
-  
+
 };
 </script>
 

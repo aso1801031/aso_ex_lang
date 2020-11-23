@@ -8,7 +8,7 @@
                 <!--フォーム-->
                 <v-form>
                     <v-row class="row_el_top">
-                        <v-col cols="12" md="5" class="element_left">
+                        <v-col cols="12" sm="5" xs="12" class="element_left">
                             <!--:rules="nameRules"-->
                             <!--名前-->
                             <v-text-field
@@ -16,29 +16,24 @@
                             label="user"
                             ></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="5" offset="2" class="element_right">
+                        <v-col cols="12" sm="5" offset="2" xs="12" class="element_right">
                             <!--言語選択-->
                             <v-select
                             :items="items"
+                            v-model="language"
                             label="language"
                             required></v-select>
                         </v-col>
                     </v-row>
                     
                     <v-row class="row_el">
-                        <v-col cols="12" md="5" class="element_left">
+                        <v-col cols="12" sm="5" xs="12" class="element_left">
                             <!--時間-->
-                            <v-text-field
-                            v-model="time"
-                            label="time"
-                            ></v-text-field>    
+                            <time-picker v-model="time" class=""/>
                         </v-col>
-                        <v-col cols="12" md="5" offset="2" class="element_right">
+                        <v-col cols="12" sm="5" offset="2" xs="12" class="element_right">
                             <!--日付-->
-                            <v-text-field
-                            v-model="date"
-                            label="date"
-                            ></v-text-field>    
+                            <date-picker v-model="date" class="" />
                         </v-col>
                     </v-row>
                     <!--検索ボタン-->
@@ -47,104 +42,192 @@
                         class="accent"
                         elevation="3"
                         x-large
-                        @click="submit">
+                        v-on:click="search">
                             Search
                         </v-btn>              
                     </div>
                 </v-form>
             </v-container>
         </v-card>
-        <v-card
-        class="mx-auto mt-8 detail_card"
-        style="border-radius: 10px;"
-        elevation="2"
-        outlined>
-        <v-list-item one-line>
-            <v-list-item-avatar
-                tile
-                size="80"
-                color="success"
-                class="image_tile">
-            </v-list-item-avatar>
-            <v-list-item-content class="pb-0">
-                <v-row>
-                    <v-col cols="12"  md="6">
-                        <!--タイトル-->
-                        <p class="card_title">Title</p>
-                    </v-col>
-                    <v-col cols="12" md="5" offset="1" class="info_div">
-                        <!--ユーザー情報-->
-                        <v-list-item-subtitle>
-                            <p class="info_ele">Language : Japanese</p>
-                        </v-list-item-subtitle>
-                        <v-list-item-subtitle>
-                            <p class="info_ele">Date : 2020/11/07</p>
-                        </v-list-item-subtitle>
-                        <v-list-item-subtitle>
-                            <p class="info_ele">Time : 15:30</p>
-                        </v-list-item-subtitle>
-                    </v-col>
-                </v-row>
-            </v-list-item-content>
-        </v-list-item>
-        <hr class="under_line">
-        <!--
-        <v-card-actions>
-          <v-btn
-            outlined
-            rounded
-            text>
-            Button
-          </v-btn>
-        </v-card-actions>
-        -->
-        <div class="under_div">
-            <v-row>
-                <v-col cols="12"  md="6">
-                    <!--プロフィール-->
-                    <p class="card_profile">Hello! I'm Japanese! nice too meet you!</p>
-                </v-col>
-                <v-col cols="12" md="4" offset="2">
-                    <!--参加ボタン-->
-                    <v-btn 
-                    class="accent"
-                    elevation="3"
-                    x-large
-                    @click="submit">
-                        Join!
-                    </v-btn>              
-                </v-col>
-            </v-row>
+        <div v-if="searchflg">
+            <div v-for="lesson in lessons" :key="lesson.title">
+                <v-card
+                class="mx-auto mt-8 detail_card"
+                style="border-radius: 10px;"
+                elevation="2"
+                outlined>
+                <v-list-item one-line>
+                    <v-list-item-avatar
+                        tile
+                        size="80"
+                        color="success"
+                        class="image_tile">
+                    </v-list-item-avatar>
+                    <v-list-item-content class="pb-0">
+                        <v-row>
+                            <v-col cols="12"  md="6">
+                                <!--タイトル-->
+                                <p class="card_title">{{lesson.title}}</p>
+                            </v-col>
+                            <v-col cols="12" md="5" offset="1" class="info_div">
+                                <!--ユーザー情報-->
+                                <v-list-item-subtitle>
+                                    <p class="info_ele">Language : {{languages[lesson.language_id.id-1]}}</p>
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle>
+                                    <p class="info_ele">Date : {{lesson.lesson_date}}</p>
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle>
+                                    <p class="info_ele">Time : {{lesson.lesson_time}}</p>
+                                </v-list-item-subtitle>
+                            </v-col>
+                        </v-row>    
+                    </v-list-item-content>
+                </v-list-item>
+                <hr class="under_line">
+                <div class="under_div">
+                    <v-row>
+                        <v-col cols="12"  md="6">
+                            <!--プロフィール-->
+                            <p class="card_profile">{{lesson.text}}</p>
+                        </v-col>
+                        <v-col cols="12" md="4" offset="2">
+                            <!--参加ボタン-->
+                            <v-btn 
+                            class="accent"
+                            elevation="3"
+                            x-large
+                            ><!--v-on:click="join"-->
+                                Join!
+                            </v-btn>              
+                        </v-col>
+                    </v-row>
+                </div>
+            </v-card>     
+        </div>   
         </div>
-      </v-card>    
+    
+        <div v-else>
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
-      data: () => ({
-        valid: false,
-        username: '',
-        items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
-        time: '',
-        date: '',
-        /*nameRules: [
-          v => !!v || 'Name is required',
-          //v => v.length <= 10 || 'Name must be less than 10 characters',
-        ],*/
-        /*email: '',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+/.test(v) || 'E-mail must be valid',
-        ],*/
-      }),
-      methods: {
-      submit () {
-        this.$v.$touch()
-      },
-    },
+    import firebase from '~/plugins/firebase'
+    import DatePicker from "@/components/DatePicker";
+    import TimePicker from "@/components/TimePicker";
 
+    export default {
+        data: () => ({
+            valid: false,
+            username: '',
+            items: ['japanese', 'english', 'chinese', 'hangle','french','spanish'],
+            title: "",
+            language: "",
+            date: "",
+            time: "",
+            text: "",
+            searchflg:false,
+            lessons:[],
+            languages:[],
+            /*nameRules: [
+            v => !!v || 'Name is required',
+            //v => v.length <= 10 || 'Name must be less than 10 characters',
+            ],*/
+            /*email: '',
+            emailRules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+/.test(v) || 'E-mail must be valid',
+            ],*/
+        }),
+        computed:{
+        },
+        methods: {
+            search() {
+                var userflg=false;
+                var langflg=false;
+                var timeflg=false;
+                var dateflg=false;
+                var userpath="users/";
+                var langpath="languages/";
+                this.lessons.length=0;
+                this.searchflg=false;
+
+                //console.log(this.username,this.language,this.date,this.time)
+                //usersでユーザー特定
+                firebase.firestore().collection('users').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        //名前判定
+                        if(this.username !== ""){
+                            if(this.username === doc.data().name){
+                                userpath+=doc.id
+                                //userflg = true
+                                //console.log(1,userpath,doc.data().name,doc.id)
+                            }
+                        }
+
+
+                    })
+                })
+
+                //languageで言語特定
+                firebase.firestore().collection('languages').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        //名前判定
+                        if(this.language !== ""){
+                            if(this.language === doc.data().name){
+                                langpath+=doc.id
+                                //langflg = true
+                                //console.log(2,this.language,doc.data().name,langpath)
+                            }
+                        }
+
+                    })
+                })
+
+                firebase.firestore().collection('lessons').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        //console.log(doc.data().teacher_id.path,userpath,doc.data().teacher_id.path === userpath)
+                        //名前判定
+                        userflg = this.username === "" || doc.data().teacher_id.path === userpath
+                        //言語判定
+                        langflg = this.language === "" || doc.data().language_id.path === langpath
+                        //時間判定
+                        timeflg = this.time === "" || this.time === doc.data().lesson_time
+                        //console.log(3,this.time,doc.data().lesson_time,timeflg)
+                        //日付判定
+                        dateflg = this.date === "" || this.date === doc.data().lesson_date
+                        //console.log(4,this.date,doc.data().lesson_date,dateflg)
+                        if(userflg && langflg && timeflg && dateflg){
+                            this.searchflg = true
+                            this.lessons.push(doc.data())
+                        }
+                        if(this.username === "" && this.language === "" &
+                            this.time === "" && this.date === ""){
+                                this.searchflg = false
+                            }
+                        //console.log(doc.data().language_id)
+                        //console.log(5, userflg,langflg,timeflg , dateflg)
+
+                    })
+                })
+                console.log(this.username,this.language,this.date,this.time)
+                console.log(this.lessons)
+
+            },
+        },
+        created:function () {
+            firebase.firestore().collection('languages').get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    this.languages.push(doc.data().name)
+                })
+            })
+            //console.log("lang",this.languages)
+
+        }
     }
+
+    
 </script>
 
 <style>

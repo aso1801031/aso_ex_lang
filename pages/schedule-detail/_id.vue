@@ -48,14 +48,35 @@
             <div>
                 <p class="card_profile">{{text}}</p>
             </div>
-                <div class="under_btn">
-                    <v-btn 
-                    class="accent"
-                    elevation="3"
-                    x-large
-                    ><!--@click="submit"-->
-                    lesson Start!
-                </v-btn>              
+            <div class="under_btn">
+                <v-row>
+                    <v-col cols="12"  sm="6" xs="12">
+                        <div class="back_btn">
+                            <!--戻るボタン-->
+                            <v-btn 
+                            class="accent"
+                            elevation="3"
+                            x-large
+                            v-on:click="back"
+                            >
+                            back
+                            </v-btn>        
+                        </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" xs="12">
+                        <div class="lesson_btn">
+                            <!--開始ボタン-->
+                            <v-btn 
+                            class="accent"
+                            elevation="3"
+                            x-large
+                            ><!--@click="submit"-->
+                            lesson Start!
+                            </v-btn>        
+                        </div>
+                    </v-col>
+                </v-row>
+
             </div>
         </div>
     </v-card>    
@@ -74,6 +95,11 @@
             id:this.$route.params.id
             
         }
+        },
+        methods:{
+            back: function () {
+                location.href="/schedule"
+            }
         },
         async created () {
         if(this.id != null){
@@ -132,6 +158,12 @@
     .under_btn{
         margin-top: 70px;
         margin-bottom: 30px;
+        text-align: right;
+    }
+    .back_btn{
+        text-align: left;
+    }
+    .lesson_btn{
         text-align: right;
     }
 </style>
