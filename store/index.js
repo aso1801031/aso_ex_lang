@@ -1,4 +1,4 @@
-
+import {getUserFromCookie, getUserFromSession} from '@/helpers'
 export const state = () =>({
   // 新規登録
   admin_flg: "",
@@ -12,6 +12,14 @@ export const state = () =>({
   birth: "",
   id:"",
 })
+export const actions = {
+  async nuxtServerInit ({ dispatch }, { req }) {
+    const user = getUserFromCookie(req)
+    if (user) {
+      await dispatch('user/setUSER', { email: user.email, uid: user.user_id})
+    }
+  }
+}
 
 
 export const mutations = {

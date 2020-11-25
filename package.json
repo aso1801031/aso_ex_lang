@@ -9,11 +9,15 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "cookie-universal-nuxt": "^2.1.4",
+    "cookieparser": "^0.1.0",
     "core-js": "^3.6.5",
     "firebase": "^8.0.2",
     "json-cyclic": "^1.0.2",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "nuxt": "^2.14.7",
+    "universal-cookie": "^4.0.4",
     "v-calendar": "^2.0.2"
   },
   "devDependencies": {

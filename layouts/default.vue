@@ -27,7 +27,7 @@
           </nuxt-link>
       </div>
       <div>
-        <button onclick="location.href='login" @click="logout">ログアウト</button>
+        <button onclick="location.href='login" @click="logoutUser">ログアウト</button>
         <img src="@/assets/logout.png" width='16px' height="16px">
       </div>
 
@@ -49,7 +49,14 @@
 
 <script>
 import firebase from '~/plugins/firebase'
+import { mapActions } from "vuex";
 export default {
+  middleware({ store, redirect }) {
+      // If the user is not authenticated
+      if (!store.getters['user/isAuthenticated']) {
+        return redirect('/login')
+      }
+    },
   data () {
     return {
       clipped: false,
@@ -96,25 +103,19 @@ export default {
     }
   },
   methods: {
-    logout() {
-      firebase.auth().signOut().then(function() {
-        console.log("signout")
-      }).catch(function(error) {
-        // An error happened.
-      });
+    ...mapActions('user', [ 'logout' ]),
+    async logoutUser() {
+      await this.logout()
+      // firebase.auth().signOut().then(function() {
+      //   console.log("signout")
+      // }).catch(function(error) {
+      //   // An error happened.
+      // });
+      this.$router.push("/login");
     } 
   },
   created: ()=>{
-      firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        // サインインしていない状態
-        // サインイン画面に遷移する等
-        // 例:
-        location.href = '/login';
-      } else {
-        // サインイン済み
-      }
-    });
+      
   },
 }
 </script>

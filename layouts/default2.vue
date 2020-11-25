@@ -30,6 +30,12 @@
 
 <script>
 export default {
+  middleware({ store, redirect }) {
+      // If the user is not authenticated
+      if (store.getters['user/isAuthenticated']) {
+        return redirect('/home')
+      }
+    },
   data () {
     return {
       clipped: false,
