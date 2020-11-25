@@ -16,7 +16,7 @@
                         </v-col>
                         <v-col cols="12" md="1"></v-col>
                         <v-col cols="12" md="6" align=center>
-                            <p class="mt-6">{{ this.$store.state.mailadress }}</p>
+                            <p class="p_dao mt-6">{{ this.$store.state.mailadress }}</p>
                         </v-col>
                     </v-row>
                     <!-- password -->
@@ -83,7 +83,7 @@
                         </v-col>
                         <v-col cols="12" md="1"></v-col>
                         <v-col cols="12" md="6" align=center>
-                            <p class="mt-10">{{ this.$store.state.profile }}</p>
+                            <p class="p_dao mt-10">{{ this.$store.state.profile }}</p>
                         </v-col>
                     </v-row>
                     <!-- image  -->
@@ -136,9 +136,15 @@ import firebase from '~/plugins/firebase'
         data: () => ({
             valid: false,
             // mailadress: this.$store.state.mailadress,
-            items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
-            time: '',
-            date: '',
+            admin_flg: "",
+            birth: "",
+            imagepass: "",
+            language_id: "",
+            mailadress: "",
+            name: "",
+            password: "",
+            profile: "",
+            birth: "",
         }),
 
         methods:{
@@ -160,6 +166,17 @@ import firebase from '~/plugins/firebase'
                 firebase.auth().createUserWithEmailAndPassword(this.$store.state.mailadress,this.$store.state.password)
                 .then(ok => { 
                     console.log("Register OK", ok); 
+
+                    this.$store.commit('refresh',{
+                        mailadress:this.mailadress, 
+                        password:this.password, 
+                        name:this.name, 
+                        birth:this.birth, 
+                        language_id:this.language_id, 
+                        profile:this.profile, 
+                        imagepass:this.imagepass
+                    })
+
                     location.href = "login";
                 }, 
                 error => { 
@@ -202,6 +219,9 @@ import firebase from '~/plugins/firebase'
     .image_tile{
         margin-left: 20px;
         border-radius: 10px;
+    }
+    .p_dao{
+        word-break: normal;
     }
     h3, p{
         white-space: nowrap;
