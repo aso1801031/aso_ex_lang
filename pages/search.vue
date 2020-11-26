@@ -114,10 +114,14 @@
 
 <script>
     import firebase from '~/plugins/firebase'
-    import DatePicker from "@/components/DatePicker";
-    import TimePicker from "@/components/TimePicker";
+    import DatePicker from "@/components/SearchDatePicker";
+    import TimePicker from "@/components/SearchTimePicker";
 
     export default {
+        components:{
+            DatePicker,
+            TimePicker,
+        },
         data: () => ({
             valid: false,
             username: '',
@@ -130,6 +134,7 @@
             searchflg:false,
             lessons:[],
             languages:[],
+            l_date:""
             /*nameRules: [
             v => !!v || 'Name is required',
             //v => v.length <= 10 || 'Name must be less than 10 characters',
@@ -152,6 +157,7 @@
                 var langpath="languages/";
                 this.lessons.length=0;
                 this.searchflg=false;
+                let today = new Date()
 
                 //console.log(this.username,this.language,this.date,this.time)
                 //usersでユーザー特定
@@ -198,7 +204,10 @@
                         //日付判定
                         dateflg = this.date === "" || this.date === doc.data().lesson_date
                         //console.log(4,this.date,doc.data().lesson_date,dateflg)
-                        if(userflg && langflg && timeflg && dateflg){
+
+                        // 現在の時間を取得
+                        this.l_date = new Date(doc.data().lesson_date+" "+doc.data().lesson_time)
+                        if(userflg && langflg && timeflg && dateflg && today < this.l_date){
                             this.searchflg = true
                             this.lessons.push(doc.data())
                         }
