@@ -7,6 +7,7 @@
             >
             <v-container class="signup_card pt-16">
                 <!--form-->
+                <ValidationObserver v-slot="{ invalid }">
                 <v-form>
                     <!-- e-mail  -->
                     <v-row>
@@ -147,6 +148,7 @@
                     <!--signup_btn-->
                     <div class="signup_btn mb-16 mt-10">
                         <v-btn 
+                        :disabled="invalid || !isFormCompleted"
                         class="accent"
                         elevation="3"
                         height="80"
@@ -167,6 +169,7 @@
                         </v-btn>              
                     </div>
                 </v-form>
+                </ValidationObserver>
             </v-container>
         </v-card>  
     </div>
@@ -195,6 +198,7 @@
             username: '',
             items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
             value: "",
+            displayButtons: true,
         }),
         computed:{
             mailadress: {
@@ -277,18 +281,20 @@
                     console.log(this.imagepass)
                 }
             },
+            // 入力欄未入力時
+            isFormCompleted: function() {
+                if (
+                    !this.mailadress ||
+                    !this.name
+                ) {
+                    return false
+                }
+                return true
+            },
         },
         methods:{
             signup:function(){
-                // alert('ボタンが押下されました')
-                // alert(errors.any())
-                // if(errors.any() || !isFormCompleted){
-                //     alert('入力エラーがあります')
-                // }
-
-                // alert('入力エラーがありません')
-                
-                // this.displayButtons = false
+                this.displayButtons = false
                 this.$router.push('mamber-registration-verification')
             },
             submit:function(){
