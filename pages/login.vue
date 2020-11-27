@@ -73,18 +73,27 @@ export default {
         return {
         email: '',
         password: ''
-    }
-},
-methods : {
-    ...mapActions('user', [ 'login' ]),
-    submit() {
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
-        return this.login()
-      }).then(() => {
-        this.$router.push("/home");
-      }).catch((error) => {
-        console.log(error.message)
-      })
+        }
+    },
+    methods : {
+        ...mapActions('user', [ 'login' ]),
+        submit() {
+            firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
+            return this.login()
+        }).then(() => {
+            firebase.firestore().collection('users').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                    if(doc.data().mailadress === this.email){
+                        console.log(1,doc.id, " => ", doc.data());
+                        this.$store.commit("changId", doc.id);
+                        console.log(2);
+                        this.$router.push("/home");
+                    }
+                })
+            })
+        }).catch((error) => {
+            console.log(error.message)
+        })
         }
     }
 }

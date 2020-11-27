@@ -1,5 +1,6 @@
 <template>
   <div class="calendar_view">
+    <!--{{$store.state.id}}-->
     <v-date-picker
     full-width
     no-title
@@ -8,10 +9,10 @@
     :allowed-dates='allowedDate'
     v-model="picker"
     />
-    <h4 class="mt-3">{{l_date}}</h4>
+    <p class="mt-1 mb-2 today">{{l_date}}</p>
     <div v-for="allLesson of allLessons" :key="allLesson.title" v-if="allLesson.lesson_date == l_date">
       <p class="lesson_time">{{ allLesson.lesson_time }}</p>
-      <a v-bind:href="getLessonDate(allLesson.lesson_time)"><p class="lesson_title"></p>{{allLesson.title}}</p></a>
+      <a class="title_link" v-bind:href="getLessonDate(allLesson.lesson_time)"><h5 class="lesson_title">{{allLesson.title}}</h5></a>
     </div>
 </div>
 </template>
@@ -133,14 +134,25 @@ export default {
     height: 550px;
   }
   .lesson_time{
-    font-size: 1em;
+    font-size: 1.2em;
     margin-bottom: 0%;
     margin-top: 10px;
     color: dimgray;
   }
   .lesson_title{
-    font-size: 1.1em;
-    margin: 0%;
+    font-size: 1.2em;
+    margin: 0px;
+    display:inline;
+  }
+  a.title_link{
+  transition: color 0.3s;
+  text-decoration: none;
+  }
+  .today{
+    font-size: 1.25em;
+  }
+  a.title_link:hover{
+  color : crimson;
   }
   .v-application p {
     margin-bottom: 0px;
