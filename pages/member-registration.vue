@@ -14,27 +14,34 @@
                             <h3 class="mt-5">E-mail</h3>
                         </v-col>
                         <v-col cols="12" md="8">
-                            <v-text-field
-                            v-model="mailadress"
-                            label="E-mail"
-                            type="email"
-
-                            ></v-text-field>
+                            <ValidationProvider name="E-mail" rules="required|email|max:50" v-slot="{ errors }">
+                                <v-text-field
+                                v-model="mailadress"
+                                label="E-mail"
+                                type="email"
+                                :error-messages="errors"
+                                ></v-text-field>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
                     <!-- password -->
+                    <ValidationObserver>
                     <v-row>
                         <v-col cols="12" md="4" align=center>
                             <h3 class="mt-10">Password</h3>
                         </v-col>
                         <v-col cols="12" md="8">
+                        <ValidationProvider name="password" v-slot="{ errors }" rules="required|max:50" vid="confirmation">
                             <v-text-field
-                            v-model="password"
+                            v-model="confirmation"
                             label="password"
                             type="password"
                             class="mt-5"
+                            :error-messages="errors"
                             ></v-text-field>
+                        </ValidationProvider>
                         </v-col>
+
                     </v-row>
                     <!-- confirm Password  -->
                     <v-row>
@@ -42,24 +49,32 @@
                             <h3 class="mt-10">Confirm Password</h3>
                         </v-col>
                         <v-col cols="12" md="8">
-                            <v-text-field
-                            label="confirm Password"
-                            type="password"
-                            class="mt-5"
-                            ></v-text-field>
+                            <ValidationProvider name="password" rules="confirmed:confirmation" v-slot="{ errors }">
+                                <v-text-field
+                                v-model="value"
+                                label="confirm Password"
+                                type="password"
+                                class="mt-5"
+                                :error-messages="errors"
+                                ></v-text-field>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
+                    </ValidationObserver>
                     <!-- name  -->
                     <v-row>
                         <v-col cols="12" md="4" align=center>
                             <h3 class="mt-10">Name</h3>
                         </v-col>
                         <v-col cols="12" md="8">
+                            <ValidationProvider name="name" rules="required|max:50" v-slot="{ errors }">
                             <v-text-field
                             v-model="name"
                             label="name"
                             class="mt-5"
+                            :error-messages="errors"
                             ></v-text-field>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
                     <!-- birth  -->
@@ -68,12 +83,15 @@
                             <h3 class="mt-10">Birth</h3>
                         </v-col>
                         <v-col cols="12" md="8">
+                            <ValidationProvider name="birth" rules="required|max:50" v-slot="{ errors }">
                             <v-text-field
                             v-model="birth"
                             label="birth"
                             class="mt-5"
                             type="date"
+                            :error-messages="errors"
                             ></v-text-field>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
                     <!-- language -->
@@ -82,33 +100,37 @@
                             <h3 class="mt-10">Language</h3>
                         </v-col>
                         <v-col cols="12" md="8">
+                            <ValidationProvider rules="required|oneOf:Japanese,English,Chinese,Korean,French,Spanish" name="Language" v-slot="{ errors }">
                             <v-select
                             :items="items"
                             label="language"
                             v-model="language_id"
                             class="mt-5"
+                            :error-messages="errors"
                             ></v-select>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
-
                     <!-- Profile -->
-                    <v-row>
+                     <v-row>
                         <v-col cols="12" md="4" align=center>
                             <h3 class="mt-10">Profile</h3>
                         </v-col>
                         <v-col cols="12" md="8">
+                            <ValidationProvider name="profile" rules="required|max:50" v-slot="{ errors }">
                             <v-textarea
                             v-model="profile"
                             auto-grow
                             class="mt-5"
-                            color="deep-purple"
                             label="profile"
                             rows="1"
+                            :error-messages="errors"
                             ></v-textarea>
+                            </ValidationProvider>
                         </v-col>
                     </v-row>
                     <!-- image  -->
-                    <v-row>
+                    <!-- <v-row>
                         <v-col cols="12" md="4" align=center>
                             <h3 class="mt-10">Image</h3>
                         </v-col>
@@ -119,7 +141,7 @@
                             class="mt-6"
                             ></v-file-input>
                         </v-col>
-                    </v-row>
+                    </v-row> -->
 
 
                     <!--signup_btn-->
@@ -151,14 +173,28 @@
 </template>
 
 <script>
+    import { extend } from 'vee-validate';
+    import * as rules from 'vee-validate/dist/rules';
+    
+
+    Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+    });
+
+    // with typescript
+    for (let [rule, validation] of Object.entries(rules)) {
+    extend(rule, {
+        ...validation
+    });
+    }
+    
     export default {
         layout:"default2",
         data: () => ({
             valid: false,
             username: '',
             items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
-            time: '',
-            date: '',
+            value: "",
         }),
         computed:{
             mailadress: {
@@ -179,6 +215,16 @@
                     this.a = newValue
                     this.$store.commit('changPassword',this.a)
                     console.log(this.password)
+                }
+            },
+            confirmation: {
+                get: function(){
+                return this.$store.state.password
+                },
+                set:function(newValue){
+                    this.a = newValue
+                    this.$store.commit('changPassword',this.a)
+                    console.log(this.confirmation)
                 }
             },
             name: {
@@ -234,7 +280,15 @@
         },
         methods:{
             signup:function(){
-                // alert('入力エラーがあります')
+                // alert('ボタンが押下されました')
+                // alert(errors.any())
+                // if(errors.any() || !isFormCompleted){
+                //     alert('入力エラーがあります')
+                // }
+
+                // alert('入力エラーがありません')
+                
+                // this.displayButtons = false
                 this.$router.push('mamber-registration-verification')
             },
             submit:function(){
@@ -272,5 +326,6 @@
         margin-left: 20px;
         border-radius: 10px;
     }
+
 </style>
   
