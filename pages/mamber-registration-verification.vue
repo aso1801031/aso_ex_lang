@@ -182,6 +182,10 @@ import firebase from '~/plugins/firebase'
                 error => { 
                     console.log("Register error", error); 
                     alert("このメールアドレスは既に登録されています。");
+                    this.$store.commit('byebye',{
+                        mailadress:this.mailadress, 
+                        password:this.password, 
+                    })
                     this.$router.push('member-registration')
                 });
                 

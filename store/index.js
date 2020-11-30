@@ -61,6 +61,9 @@ export const mutations = {
     state.profile = ""
     state.imagepass = ""
     console.log("refresh通ったお"); 
-
-  }
+  },
+  byebye:function(state, obj){
+    state.mailadress = ""
+    state.password = ""
+  },
 }

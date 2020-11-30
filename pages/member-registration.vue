@@ -211,16 +211,6 @@
                     console.log(this.mailadress)
                 }
             },
-            password: {
-                get: function(){
-                return this.$store.state.password
-                },
-                set:function(newValue){
-                    this.a = newValue
-                    this.$store.commit('changPassword',this.a)
-                    console.log(this.password)
-                }
-            },
             confirmation: {
                 get: function(){
                 return this.$store.state.password
