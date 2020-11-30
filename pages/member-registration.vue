@@ -32,7 +32,7 @@
                             <h3 class="mt-10">Password</h3>
                         </v-col>
                         <v-col cols="12" md="8">
-                        <ValidationProvider name="password" v-slot="{ errors }" rules="required|max:50|min:5" vid="confirmation">
+                        <ValidationProvider name="password" v-slot="{ errors }" rules="required|max:50|min:6" vid="confirmation">
                             <v-text-field
                             v-model="confirmation"
                             label="password"
@@ -285,7 +285,12 @@
             isFormCompleted: function() {
                 if (
                     !this.mailadress ||
-                    !this.name
+                    !this.value ||
+                    !this.confirmation ||
+                    !this.name ||
+                    !this.language_id ||
+                    !this.profile ||
+                    !this.birth
                 ) {
                     return false
                 }

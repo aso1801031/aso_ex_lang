@@ -181,6 +181,8 @@ import firebase from '~/plugins/firebase'
                 }, 
                 error => { 
                     console.log("Register error", error); 
+                    alert("このメールアドレスは既に登録されています。");
+                    this.$router.push('member-registration')
                 });
                 
 
