@@ -59,11 +59,12 @@
             }
         },
         created:function () {
+            var self = this
             /* ログイン中のユーザーのメールアドレスを取得する */
-            var uid = firebase.auth().currentUser.email
+            firebase.auth().onAuthStateChanged(function(user) {
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
             let citiesRef = firebase.firestore().collection('users');
-            let query = citiesRef.where('mailadress', '==', uid).get()
+            let query = citiesRef.where('mailadress', '==', user.email).get()
               .then(snapshot => {
                 if (snapshot.empty) {
                   /* 一致する物がなかった場合 */
@@ -72,10 +73,10 @@
                 }
                 /* 一致した場合 */
                 snapshot.forEach(doc => {
-                  this.name=doc.data().name;
-                  this.languages=doc.data().language_id;
-                  this.birth=doc.data().birth;
-                  this.profile=doc.data().profile;
+                  self.name=doc.data().name;
+                  self.languages=doc.data().language_id;
+                  self.birth=doc.data().birth;
+                  self.profile=doc.data().profile;
                   console.log(doc.id, '=>', doc.data().name);
                 })
               })
@@ -83,7 +84,7 @@
                 console.log('Error getting documents', err);
               });
               
-          
+            })
         },
     }
 </script>

@@ -7,6 +7,7 @@
             elevation="2"
             style="border-radius: 10px;">
             <v-container class="profile_card">
+            <ValidationObserver v-slot="{ invalid }">
             <h1 align=center>edit profile</h1>
             <v-form>
                 <!-- Imageエリア -->
@@ -35,16 +36,20 @@
                     </v-col>
                 </v-row>
                 
-                <!-- dateエリア -->
+                <!-- birthエリア -->
                 <v-row class="nobr mt-16">
                     <v-col cols="12" md="3">
-                        <h3 class="text_size mr-6" align=center>Date</h3>
+                        <h3 class="text_size mr-6" align=center>Birth</h3>
                     </v-col>
                     <v-col cols="12" md="8" offset="1">
+                        <ValidationProvider name="birth" rules="required|max:50" v-slot="{ errors }">
                         <v-text-field
-                            v-model="date"
-                            label="date"
-                            ></v-text-field> 
+                            v-model="birth"
+                            label="birth"
+                            type="date"
+                            :error-messages="errors"
+                            ></v-text-field>
+                        </ValidationProvider>
                     </v-col>
                 </v-row>
 
@@ -55,11 +60,14 @@
                         <h3 class="text_size mr-6" align=center>Name</h3>
                     </v-col>
                     <v-col cols="12" md="8" offset="1">
+                        <ValidationProvider name="name" rules="required|max:50" v-slot="{ errors }">
                         <!--名前入力フィールド-->
                             <v-text-field
                             v-model="name"
                             label="name"
+                            :error-messages="errors"
                             ></v-text-field>  
+                            </ValidationProvider>
                     </v-col>
                 </v-row>
 
@@ -69,11 +77,10 @@
                         <h3 class="text_size mr-6" align=center>Language</h3>
                     </v-col>
                     <v-col cols="12" md="8" offset="1">
-                        <v-select
-                            :items="items"
-                            label="language"
-                            required>
-                        </v-select>
+                        <v-select v-model="itemsinfo" 
+                                :items = "items"
+                                return-object
+                                />
                     </v-col>
                 </v-row>
 
@@ -83,47 +90,81 @@
                         <h3 class="text_size mr-6" align=center>Profile</h3>
                     </v-col>
                     <v-col cols="12" md="8" offset="1">
-                        <v-text-field v-model="text" label="profile"/>
+                        <ValidationProvider name="profile" rules="required|max:50" v-slot="{ errors }">
+                        <v-text-field 
+                        v-model="text" 
+                        auto-grow
+                        label="profile" 
+                        :error-messages="errors"/>
+                        </ValidationProvider>
                     </v-col>
                 </v-row>
 
                 <!-- ボタンエリア -->
                 <div align="center" class="mt-16">
                     <!-- 変更ボタン -->
-                    <button onclick="location.href=''" class="changebtn_design accent">変更
-                    </button>
+                    <v-btn 
+                    :disabled="invalid || !isFormCompleted"
+                    @click="change" 
+                    class="changebtn_design accent">
+                    変更
+                    </v-btn>
                     <br>
                     
                     
                 </div>
             </v-form>
+            </ValidationObserver>
             </v-container>
         </v-card>
     </div>
 </template> 
 
 <script>
+    import firebase from '~/plugins/firebase'
+    import { extend } from 'vee-validate';
+    import * as rules from 'vee-validate/dist/rules';
+
+     Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+    });
+
+    // with typescript
+    for (let [rule, validation] of Object.entries(rules)) {
+    extend(rule, {
+        ...validation
+    });
+    }
+
+
     export default {
       data: () => ({
         uploadedImage: '',
         img_name: '',
         valid: false,
-        username: '',
+        itemsinfo:['Japanese'],
         items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
         time: '',
         date: '',
         name: '',
         text: '',
-        /*nameRules: [
-          v => !!v || 'Name is required',
-          //v => v.length <= 10 || 'Name must be less than 10 characters',
-        ],*/
-        /*email: '',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+/.test(v) || 'E-mail must be valid',
-        ],*/
+        birth: '',
+        id:'ai',
+        displayButtons: true,
      }),
+     computed:{
+        // 入力欄未入力時
+            isFormCompleted: function() {
+                if (
+                    !this.name ||
+                    !this.profile ||
+                    !this.birth
+                ) {
+                    return false
+                }
+                return true
+            },
+     },
      methods: {
         onFileChange(e) {
             const files = e.target.files || e.dataTransfer.files;
@@ -141,7 +182,59 @@
         remove() {
             this.uploadedImage = false;
         },
+        change(){
+            this.displayButtons = false
+            var self = this
+            /* ログイン中のユーザーのメールアドレスを取得する */
+            /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
+            let citiesRef = firebase.firestore().collection('users').doc(self.id);
+            citiesRef.update({
+                /* 一致した場合 */
+                    birth: self.birth,
+                    name: self.name,
+                    profile:self.text,
+            });
+            
+        }
      },
+     
+     created:function () {
+            var self = this
+            /* ログイン中のユーザーのメールアドレスを取得する */
+            /* var uid = "1801008@s.asojuku.ac.jp" */
+            /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
+            firebase.auth().onAuthStateChanged(function(user) {
+            let citiesRef = firebase.firestore().collection('users');
+            let query = citiesRef.where('mailadress', '==', user.email).get()
+              .then(snapshot => {
+                if (snapshot.empty) {
+                  /* 一致する物がなかった場合 */
+                  console.log('No matching documents.');
+                  return;
+                }
+                /* 一致した場合 */
+                snapshot.forEach(doc => {
+                  self.id=doc.id;
+                  self.name=doc.data().name;
+                  self.languages=doc.data().language_id;
+                  var b = doc.data().birth;
+                  b = b.replace("/","-");
+                  b = b.replace("/","-");
+                  console.log(b);
+                  self.birth=b;
+                  self.text=doc.data().profile;
+
+                  console.log(doc.id, '=>', doc.data().name);
+                })
+              })
+              .catch(err => {
+                console.log('Error getting documents', err);
+              });
+            })
+            
+              
+          
+        },
 
     }
 </script>
