@@ -129,13 +129,13 @@
 
 <script>
 import firebase from '~/plugins/firebase'
+var db = firebase.firestore();
 
     export default {
         layout:"default2",
         
         data: () => ({
             valid: false,
-            // mailadress: this.$store.state.mailadress,
             admin_flg: "",
             birth: "",
             imagepass: "",
@@ -145,18 +145,38 @@ import firebase from '~/plugins/firebase'
             password: "",
             profile: "",
             birth: "",
+            lang:"",
         }),
+        created(){
+            var self = this
+            firebase.auth().onAuthStateChanged(function(user) {
+                console.log(user)
+                self.mail = user.email
+                console.log(self.mail)
+
+                db.collection("languages").where('name' , "==" , self.$store.state.language_id).get().then((query) => {
+                query.forEach(element => {
+                    self.lang = element.id
+                    console.log(element.data())
+                    console.log(element.id)
+                    });
+                }).catch((error) => {
+                    console.log(error)
+                });
+            })
+        },
 
         methods:{
             signup:function(){
                 const db = firebase.firestore()
                 let dbUsers = db.collection('users')
+                var langref = db.collection("languages").doc(this.lang)
                 dbUsers
                 .add({
                     admin_flg: "false",
                     birth: this.$store.state.birth,
                     imagepass: "1",
-                    language_id: this.$store.state.language_id,
+                    language_id: langref,
                     mailadress: this.$store.state.mailadress,
                     name: this.$store.state.name,
                     password: this.$store.state.password,

@@ -101,7 +101,7 @@
                             <h3 class="mt-10">Language</h3>
                         </v-col>
                         <v-col cols="12" md="8">
-                            <ValidationProvider rules="required|oneOf:Japanese,English,Chinese,Korean,French,Spanish" name="Language" v-slot="{ errors }">
+                            <ValidationProvider rules="required" name="Language" v-slot="{ errors }">
                             <v-select
                             :items="items"
                             label="language"
@@ -178,6 +178,8 @@
 <script>
     import { extend } from 'vee-validate';
     import * as rules from 'vee-validate/dist/rules';
+    import firebase from '~/plugins/firebase'
+    var db = firebase.firestore();
     
 
     Object.keys(rules).forEach(rule => {
@@ -196,10 +198,26 @@
         data: () => ({
             valid: false,
             username: '',
-            items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
+            items: [],
             value: "",
             displayButtons: true,
+            language: "",
         }),
+        created(){
+            db.collection('languages').get().then((query) => {
+            var flag = 0
+            query.forEach(element => {
+                var data = element.data()
+                console.log(data.name)
+                this.items.push(data.name)
+                console.log(this.items)
+                flag++
+                console.log(element.id)
+            });
+            }).catch((error=>{
+            console.log(error)
+            }));
+        },
         computed:{
             mailadress: {
                 get: function(){
