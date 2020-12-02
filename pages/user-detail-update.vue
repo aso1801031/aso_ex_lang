@@ -77,10 +77,15 @@
                         <h3 class="text_size mr-6" align=center>Language</h3>
                     </v-col>
                     <v-col cols="12" md="8" offset="1">
-                        <v-select v-model="itemsinfo" 
-                                :items = "items"
-                                return-object
-                                />
+                        <ValidationProvider rules="required" name="Language" v-slot="{ errors }">
+                        <v-select 
+                        v-model="language"
+                        :items="languageList"
+                        label="language"
+                        :error-messages="errors"
+                        clearable
+                        />
+                        </ValidationProvider>
                     </v-col>
                 </v-row>
 
@@ -104,7 +109,7 @@
                 <div align="center" class="mt-16">
                     <!-- 変更ボタン -->
                     <v-btn 
-                    :disabled="invalid || !isFormCompleted"
+                    :disabled= "invalid || !isFormCompleted"
                     @click="change" 
                     class="changebtn_design accent">
                     変更
@@ -124,6 +129,7 @@
     import firebase from '~/plugins/firebase'
     import { extend } from 'vee-validate';
     import * as rules from 'vee-validate/dist/rules';
+    var db = firebase.firestore();
 
      Object.keys(rules).forEach(rule => {
     extend(rule, rules[rule]);
@@ -142,8 +148,7 @@
         uploadedImage: '',
         img_name: '',
         valid: false,
-        itemsinfo:['Japanese'],
-        items: ['Japanese', 'English', 'Chinese', 'Korean','French','Spanish'],
+
         time: '',
         date: '',
         name: '',
@@ -151,19 +156,24 @@
         birth: '',
         id:'ai',
         displayButtons: true,
-     }),
+        languageList:[],
+        language:'',
+        
+        }),
      computed:{
         // 入力欄未入力時
             isFormCompleted: function() {
                 if (
                     !this.name ||
-                    !this.profile ||
-                    !this.birth
+                    !this.text ||
+                    !this.birth ||
+                    !this.language
                 ) {
                     return false
                 }
                 return true
             },
+            
      },
      methods: {
         onFileChange(e) {
@@ -183,17 +193,32 @@
             this.uploadedImage = false;
         },
         change(){
-            this.displayButtons = false
-            var self = this
+            this.displayButtons = false;
+            var self = this;
+            console.log(self.languageList);
             /* ログイン中のユーザーのメールアドレスを取得する */
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
-            let citiesRef = firebase.firestore().collection('users').doc(self.id);
-            citiesRef.update({
-                /* 一致した場合 */
+            db.collection("languages").where('name' , "==" , this.language).get().then((query) => {
+            query.forEach(element => {
+                this.lang = element.id
+                console.log(element.data())
+                console.log(element.id)
+                var langref = db.collection("languages").doc(this.lang)
+                let citiesRef = firebase.firestore().collection('users').doc(self.id);
+                console.log(langref)
+                citiesRef.update({
+                    /* 一致した場合 */
                     birth: self.birth,
                     name: self.name,
                     profile:self.text,
+                    language_id:langref,
+                });
+            this.$router.push('/profile')
+                });
+            }).catch((error) => {
+                console.log(error)
             });
+
             
         }
      },
@@ -201,7 +226,6 @@
      created:function () {
             var self = this
             /* ログイン中のユーザーのメールアドレスを取得する */
-            /* var uid = "1801008@s.asojuku.ac.jp" */
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
             firebase.auth().onAuthStateChanged(function(user) {
             let citiesRef = firebase.firestore().collection('users');
@@ -216,14 +240,21 @@
                 snapshot.forEach(doc => {
                   self.id=doc.id;
                   self.name=doc.data().name;
-                  self.languages=doc.data().language_id;
+                  
                   var b = doc.data().birth;
                   b = b.replace("/","-");
                   b = b.replace("/","-");
                   console.log(b);
                   self.birth=b;
                   self.text=doc.data().profile;
-
+                  self.language = doc.data().language_id.path;
+                  console.log(self.language);
+                  var a = self.language.split('/');
+                  db.collection('languages').doc(a[1]).get().
+                  then((query)=> {
+                      console.log(query.data().name);
+                      self.language = query.data().name;
+                  })
                   console.log(doc.id, '=>', doc.data().name);
                 })
               })
@@ -231,9 +262,20 @@
                 console.log('Error getting documents', err);
               });
             })
+
+            /* languageの処理 */
+            db.collection('languages').get().then((query) => {
+            query.forEach(element => {
+                var data = element.data()
+                console.log(data.name)
+                this.languageList.push(data.name)
+                console.log(this.languageList)
+                console.log(element.id)
+            });
+            }).catch((error=>{
+            console.log(error)
+            }));
             
-              
-          
         },
 
     }

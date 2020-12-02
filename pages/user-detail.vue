@@ -62,6 +62,7 @@
             var self = this
             /* ログイン中のユーザーのメールアドレスを取得する */
             firebase.auth().onAuthStateChanged(function(user) {
+              
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
             let citiesRef = firebase.firestore().collection('users');
             let query = citiesRef.where('mailadress', '==', user.email).get()
@@ -73,8 +74,20 @@
                 }
                 /* 一致した場合 */
                 snapshot.forEach(doc => {
+                  /* languageの参照先 */
+                  firebase.firestore().collection('languages').get()
+                    .then(query =>{
+                      
+                    query.forEach(res => {
+                      if( res.id === doc.data().language_id.id){
+                        self.languages = res.data().name;
+                      }
+                    })
+                    })
+                    .catch(err => {
+
+                  });
                   self.name=doc.data().name;
-                  self.languages=doc.data().language_id;
                   self.birth=doc.data().birth;
                   self.profile=doc.data().profile;
                   console.log(doc.id, '=>', doc.data().name);
