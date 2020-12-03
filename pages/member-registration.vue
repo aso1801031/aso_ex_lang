@@ -15,7 +15,7 @@
                             <h3 class="mt-5">E-mail</h3>
                         </v-col>
                         <v-col cols="12" md="8">
-                            <ValidationProvider name="E-mail" rules="required|email|max:50" v-slot="{ errors }">
+                            <ValidationProvider name="E-mail" :rules="{required:true, email:true, max:50,regex:/.+@s\.asojuku\.ac\.jp$/}" v-slot="{ errors }">
                                 <v-text-field
                                 v-model="mailadress"
                                 label="E-mail"
