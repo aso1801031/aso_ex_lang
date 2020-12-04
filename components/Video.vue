@@ -15,7 +15,7 @@
       </v-row>
       <v-row >
         <v-col>
-          <input v-model="searchText" class="white primary--text mb-2">
+          <!-- <input v-model="searchText" class="white primary--text mb-2"> -->
           <v-spacer></v-spacer>
           
           <div>{{myId}}</div><v-btn @click = "makeCall" x-large class="accent">call</v-btn>
@@ -34,34 +34,74 @@
 
 <script>
 import Peer from "skyway-js"
+import firebase from '~/plugins/firebase'
 export default {
   name: 'app',
   data(){
     return {
       localStream: undefined,
       otherStream: undefined,
-      peer: new Peer({key:"16a14632-8309-465c-ab3f-8193008c0657"}),
+      peer: "",
       mediaConnection: null,
       myId: null,
       searchText:"",
+      searchId:"",
+      roomId: this.$route.params.id,
+      fullId:"",
       
     }　
   },
   async created() {
-    
+    var topId = this.roomId.slice(0, 8)
+    var bottomId = this.$store.state.id.slice(0,8)
+    this.fullId = topId+bottomId
+    console.log("[Video.vue] my id:",this.fullId)
+    this.peer = new Peer(this.fullId,{key:"16a14632-8309-465c-ab3f-8193008c0657"})
+    firebase.firestore().collection("chats").doc(this.roomId).get()
+    .then(doc =>  {
+      doc.data().user1.get().then(user_First =>{
+        doc.data().user2.get().then(user_Second =>{
+          var bottomOtherId = ""
+          if(user_First.id == this.$store.state.id){
+            bottomOtherId = user_Second.id.slice(0,8)
+          }else{
+            bottomOtherId = user_First.id.slice(0,8)
+          }
+          this.searchId = topId + bottomOtherId
+          console.log("[Video.vue] other id:",this.searchId)
+        })
+      })
+      
+      
+      
+      
+      
+    })
     this.localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true
     })
+    // await firebase.firestore()
+    // .collection('chats')
+    // .doc(this.roomId)
+    // .get()
+    // .then(doc =>{
+    //   doc.data().user1
+    // })
+
   },
   methods: {
     makeCall(){
-      console.log("call!!!")
-      this.mediaConnection = this.peer.call(this.searchText,this.localStream)
-      this.mediaConnection.on('stream', stream => {
-        console.log("streamきたよ!!!")
-        this.otherStream = stream;
-      })
+      try {
+        console.log("call!!!")
+        this.mediaConnection = this.peer.call(this.searchId,this.localStream)
+        this.mediaConnection.on('stream', stream => {
+          console.log("streamきたよ!!!")
+          this.otherStream = stream;
+        })
+      } catch (error) {
+          console.log(error)
+        }
     },
   },
   async mounted(){
