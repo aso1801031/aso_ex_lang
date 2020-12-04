@@ -70,6 +70,7 @@
                             class="accent"
                             elevation="3"
                             x-large
+                            v-on:click="start"
                             ><!--@click="submit"-->
                             lesson Start!
                             </v-btn>        
@@ -99,6 +100,16 @@
         methods:{
             back: function () {
                 location.href="/schedule"
+            },
+            start(){
+                firebase.firestore().collection('lessonAttendances').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        if(doc.data().lesson_id.id === this.id){
+                            location.href = "/video-chat/"+doc.data().chat_id.id
+                        }
+                    })
+                })
+
             }
         },
         async created () {

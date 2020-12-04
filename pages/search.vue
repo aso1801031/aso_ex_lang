@@ -67,18 +67,18 @@
                         <v-row>
                             <v-col cols="12"  md="6">
                                 <!--タイトル-->
-                                <p class="card_title">{{lesson.title}}</p>
+                                <p class="card_title">{{lesson.data.title}}</p>
                             </v-col>
                             <v-col cols="12" md="5" offset="1" class="info_div">
                                 <!--ユーザー情報-->
                                 <v-list-item-subtitle>
-                                    <p class="info_ele">Language : {{languages[lesson.language_id.id-1]}}</p>
+                                    <p class="info_ele">Language : {{languages[lesson.data.language_id.id-1]}}</p>
                                 </v-list-item-subtitle>
                                 <v-list-item-subtitle>
-                                    <p class="info_ele">Date : {{lesson.lesson_date}}</p>
+                                    <p class="info_ele">Date : {{lesson.data.lesson_date}}</p>
                                 </v-list-item-subtitle>
                                 <v-list-item-subtitle>
-                                    <p class="info_ele">Time : {{lesson.lesson_time}}</p>
+                                    <p class="info_ele">Time : {{lesson.data.lesson_time}}</p>
                                 </v-list-item-subtitle>
                             </v-col>
                         </v-row>    
@@ -97,7 +97,7 @@
                             class="accent"
                             elevation="3"
                             x-large
-                            ><!--v-on:click="join"-->
+                            v-on:click="join(lesson.id)">
                                 Join!
                             </v-btn>              
                         </v-col>
@@ -134,16 +134,7 @@
             searchflg:false,
             lessons:[],
             languages:[],
-            l_date:""
-            /*nameRules: [
-            v => !!v || 'Name is required',
-            //v => v.length <= 10 || 'Name must be less than 10 characters',
-            ],*/
-            /*email: '',
-            emailRules: [
-            v => !!v || 'E-mail is required',
-            v => /.+@.+/.test(v) || 'E-mail must be valid',
-            ],*/
+            l_date:"",
         }),
         computed:{
         },
@@ -157,8 +148,7 @@
                 var langpath="languages/";
                 this.lessons.length=0;
                 this.searchflg=false;
-                let today = new Date()
-
+                let today = new Date();
                 //console.log(this.username,this.language,this.date,this.time)
                 //usersでユーザー特定
                 firebase.firestore().collection('users').get().then(snapshot => {
@@ -195,7 +185,9 @@
                     snapshot.forEach(doc => {
                         //console.log(doc.data().teacher_id.path,userpath,doc.data().teacher_id.path === userpath)
                         //名前判定
-                        userflg = this.username === "" || doc.data().teacher_id.path === userpath
+                        userflg = this.username === "" && doc.data().teacher_id.id !== this.$store.state.id|| // ユーザーがnullかつ自分の以外ならtrue
+                        doc.data().teacher_id.path === userpath && doc.data().teacher_id.id !== this.$store.state.id // ユーザが入力値と等しいかつ、自分の以外ならtrue
+                        //console.log(doc.data().teacher_id.id,this.$store.state.id,doc.data().teacher_id.id !== this.$store.state.id)
                         //言語判定
                         langflg = this.language === "" || doc.data().language_id.path === langpath
                         //時間判定
@@ -208,11 +200,11 @@
                         // 現在の時間を取得
                         this.l_date = new Date(doc.data().lesson_date+" "+doc.data().lesson_time)
                         if(userflg && langflg && timeflg && dateflg && today < this.l_date){
-                            this.searchflg = true
-                            this.lessons.push(doc.data())
+                            this.searchflg = true //判定をtrue
+                            this.lessons.push({id:doc.id,data:doc.data()}) //lessonsに情報をまとめてlessonsに代入
                         }
                         if(this.username === "" && this.language === "" &
-                            this.time === "" && this.date === ""){
+                            this.time === "" && this.date === ""){ //全てが空で検索したら判定をfalseにする
                                 this.searchflg = false
                             }
                         //console.log(doc.data().language_id)
@@ -220,10 +212,20 @@
 
                     })
                 })
-                console.log(this.username,this.language,this.date,this.time)
-                console.log(this.lessons)
+                //console.log(this.username,this.language,this.date,this.time)
+                //console.log(this.lessons)
 
             },
+            join(id){
+                let choosepath = "choose_lesson/"
+                firebase.firestore().collection('lessonAttendances').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        if(doc.data().lesson_id.id == id){
+                            location.href="/choose_lesson/"+id;
+                        }
+                    })
+                })
+            }
         },
         created:function () {
             firebase.firestore().collection('languages').get().then(snapshot => {
