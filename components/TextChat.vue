@@ -91,13 +91,10 @@ export default {
                     
             }
         },
-        getSnapshot:async function(){
-            firebase.firestore().collection('chats').doc(this.id).collection('room').onSnapshot()
-        },
         getData: async function(){
             var ref = firebase.firestore()
             .collection('chats')
-            .doc(this.id)
+            .doc(this.roomId)
             .collection('room')
             .orderBy("timestamp", "asc")
 
