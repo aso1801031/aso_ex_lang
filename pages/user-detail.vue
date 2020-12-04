@@ -13,7 +13,7 @@
     <!--プロフィール表示領域-->
     <v-row>
       <v-col  class="text-center info">
-        <img　src=""　alt="noImage"　class="mb-5">
+        <img　src=""　alt="noImage" id="a" height="200" width="200" class="mb-5">
 
         <h1>{{ name }}</h1>
         <div class="main_div">
@@ -86,6 +86,15 @@
                     })
                     .catch(err => {
 
+                  });
+                  var storage = firebase.storage();
+                  var storageRef = storage.ref();
+                  storageRef.child(doc.data().imagepass).getDownloadURL().then(function(url) {
+                    var test = url;
+                    document.getElementById("a").src = test;
+                  
+                  }).catch(function(error) {
+                    alert(error);
                   });
                   self.name=doc.data().name;
                   self.birth=doc.data().birth;
