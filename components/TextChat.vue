@@ -83,7 +83,7 @@ export default {
                 await console.log("[TextChat]:",messageData)
                 firebase.firestore()
                 .collection('chats')
-                .doc(this.id)
+                .doc(this.roomId)
                 .collection('room')
                 .doc()
                 .set(messageData)
