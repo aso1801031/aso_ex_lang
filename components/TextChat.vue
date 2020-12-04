@@ -26,10 +26,11 @@
                 </v-row>
 
                 <transition-group name="message-list">
-                    <div v-for="data in datas.slice().reverse()" :key="data.message">
+                    <div v-for="data in datas" :key="data.id">
                         <v-row>
+                        <v-spacer v-if="data.flag"></v-spacer>
                         <v-col cols="4" class="ma-2">
-                            <v-card outlined class="info">
+                            <v-card outlined v-bind:class="{success : data.flag,info: !data.flag}">
                                 <v-card-title>{{data.message}}</v-card-title>
                             </v-card>
                         </v-col>
@@ -37,48 +38,96 @@
                     </div>
                 </transition-group>
 
-                <v-row>
-                    <v-spacer></v-spacer>
-                     <v-col cols="4" class="ma-2">
-                        
-                        <v-card outlined class="success">
-                            <v-card-title>Nice to meet you too!</v-card-title>
-                        </v-card>
-                    </v-col>
-                </v-row>
-
-                <v-row>
-                     <v-col cols="4" class="ma-2">
-                        <v-card outlined class="info">
-                            <v-card-title>Hello! nice to meet you!</v-card-title>
-                        </v-card>
-                    </v-col>
-                </v-row>
+                
 
             </v-card>
         </v-col>
     </v-row>
 </template>
 <script>
+import firebase from '~/plugins/firebase'
+import 'firebase/firestore';
+require('array-foreach-async');
 
 export default {
+    
     data: function(){
         return {
             message:"",
-            datas:[
-                
-            ]
+            
+            datas:[],
+            roomId: this.$route.params.id,
+            id:"1",
+            uid: this.$store.state.id,
+            snapshot:"",
+            number:1,
+            
+
         }
     },
+    
+    created(){
+        this.getData()
+        
+    },
     methods:{
-        pushMessage(){
+        //dataをfirestoreにあげるメソッド
+        async pushMessage(){
             if(this.message != ""){
-                this.datas.push({message:this.message})
-                this.message = ""
+                console.log("[TextChat]: pushing message!")
+                var messageData = await {
+                    message:this.message,
+                    senderid:firebase.firestore().collection("users").doc(this.uid),
+                    timestamp:firebase.firestore.FieldValue.serverTimestamp()
+                }
+                await console.log("[TextChat]:",messageData)
+                firebase.firestore()
+                .collection('chats')
+                .doc(this.id)
+                .collection('room')
+                .doc()
+                .set(messageData)
+                
+                    
             }
+        },
+        getSnapshot:async function(){
+            firebase.firestore().collection('chats').doc(this.id).collection('room').onSnapshot()
+        },
+        getData: async function(){
+            var ref = firebase.firestore()
+            .collection('chats')
+            .doc(this.id)
+            .collection('room')
+            .orderBy("timestamp", "asc")
+
+            ref.onSnapshot( (doc) => {
+                doc.docChanges().forEachAsync(async change =>{
+                    if (change.type === 'added') {
+                        console.log("[TextChat]New message from DB:", change.doc.data().message);
+                        await change.doc.data().senderid.get().then(user =>{
+                            var yours = false
+                            console.log("[TextChat]push message is:",change.doc.data().message)
+                            // console.log("[TextChat]this user:",this.uid)
+                            if(this.uid === user.id){
+                                yours = true
+                            }
+                            var messageData = {
+                                message:change.doc.data().message,
+                                flag:yours,
+                                id:this.number,
+                                
+                                }
+                            this.datas.unshift(messageData)
+                            this.number+=1
+                            
+                        })
+                    }
+                })
+            }) 
             
         }
-    }
+    },
 }
 </script>
 <style scoped>

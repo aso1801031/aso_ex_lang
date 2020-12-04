@@ -26,7 +26,7 @@
                   </v-col>
                   
                 </v-row>
-
+                
                 <v-row class="ma-0 pa-0">
                   <v-col class="ma-0 pa-0">
                     <div class="quickSand">Data:</div>
@@ -55,7 +55,7 @@
                 <div class="quickSand ml-5" style="">{{text}}</div>
               </v-col>
               <v-col cols="7"  align="right">
-                <v-btn class="accent mr-5" elevation="0" large width="200" to="/home" nuxt>参加</v-btn>
+                <v-btn class="accent mr-5" @click="join" elevation="0" large width="200">参加</v-btn>
               </v-col>
             </v-row>
             <!-- カード下部_end -->
@@ -76,25 +76,67 @@ export default {
         date: "",
         time: "",
         text: "",
-        id:this.$route.params.id
+        id:this.$route.params.id,
+        teacherUser: "",
+        lesson_id:"",
         
       }
     },
     async created () {
       if(this.id != null){
-        firebase.firestore().collection('lessons').doc(this.id).get().then(
+        await firebase.firestore().collection('lessons').doc(this.id).get().then(
         doc => {
            doc.data().language_id.get().then(res => { 
-            this.language = res.data().name
+            
+            doc.data().teacher_id.get().then(user => {
+              this.language = res.data().name
             this.title = (doc.data().title)
             
             this.date = (doc.data().lesson_date)
             this.time = (doc.data().lesson_time)
             this.text = (doc.data().detail)
+            this.teacherUser = (user.id)
+            this.lesson_id = (doc.id)
+            })
+
+            
           })
         })
       }
     },
+    methods:{
+      async join(){
+        console.log("join!")
+        let refData = await this.createChat()
+        await this.createAttendances(refData)
+        this.$router.push("/home");
+      },
+      async createChat(){
+        var ref = firebase.firestore().collection('users')
+        var userData = await {
+          user1:ref.doc(this.teacherUser),
+          user2:ref.doc(this.$store.state.id),
+        }
+        let docRef = await firebase.firestore()
+                .collection('chats')
+                .add(userData)
+        return docRef
+                
+      },
+      async createAttendances(docRef){
+        var refUser = firebase.firestore().collection('users')
+        var refLesson = firebase.firestore().collection('lessons')
+        var attendData = await {
+          chat_id:docRef,
+          lesson_id:refLesson.doc(this.id),
+          student_id:refUser.doc(this.$store.state.id),
+          teacher_id:refUser.doc(this.teacherUser),
+        }
+        await firebase.firestore()
+                .collection('lessonAttendances')
+                .add(attendData)
+      }
+    }
     
     
 }
