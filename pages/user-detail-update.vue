@@ -15,24 +15,24 @@
                     <v-col cols="12" md="3">
                         <h3 class="text_size mr-5" align=center>Image</h3>
                     </v-col>
-                    <v-col cols="12" md="8" offset="1">
-                        <label v-show="!uploadedImage" class="input-item__label info">
-                        select your file
-                        <input type="file" @change="onFileChange" />
+                    <v-col cols="12" md="4" offset="1">
+                        <img
+                            v-show="uploadedImage"
+                            class="preview-item-file"
+                            :src="uploadedImage"
+                            alt="noimage"
+                            height="200"
+                            width="200"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <label class="info input-item__label">change your image
+                        <input
+                            type="file"
+                            style="display:none"
+                            @change="onFileChange"
+                        />
                         </label>
-                         <div class="preview-item">
-                            <img
-                                v-show="uploadedImage"
-                                width="200" height="200"
-                                class="preview-item-file"
-                                :src="uploadedImage"
-                                alt=""
-                            />
-                            <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
-                                <p class="preview-item-name">{{ img_name }}</p>
-                                <p class="preview-item-icon">change image</p>
-                            </div>
-                        </div>
                     </v-col>
                 </v-row>
                 
@@ -129,6 +129,7 @@
     import firebase from '~/plugins/firebase'
     import { extend } from 'vee-validate';
     import * as rules from 'vee-validate/dist/rules';
+
     var db = firebase.firestore();
 
      Object.keys(rules).forEach(rule => {
@@ -145,10 +146,9 @@
 
     export default {
       data: () => ({
-        uploadedImage: '',
-        img_name: '',
+        uploadedImage:'',
+        img_name:'',
         valid: false,
-
         time: '',
         date: '',
         name: '',
@@ -158,6 +158,10 @@
         displayButtons: true,
         languageList:[],
         language:'',
+        img_sample:null,
+        img_tmpname:"",
+
+        
         
         }),
      computed:{
@@ -180,32 +184,37 @@
             const files = e.target.files || e.dataTransfer.files;
             this.createImage(files[0]);
             this.img_name = files[0].name;
+            this.img_sample = files[0];
         },
-        // アップロードした画像を表示
+         // アップロードした画像を表示
         createImage(file) {
             const reader = new FileReader();
             reader.onload = e => {
                 this.uploadedImage = e.target.result;
             };
-                reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
         },
-        remove() {
-            this.uploadedImage = false;
-        },
+
         change(){
             this.displayButtons = false;
             var self = this;
             console.log(self.languageList);
-            /* ログイン中のユーザーのメールアドレスを取得する */
-            /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
             db.collection("languages").where('name' , "==" , this.language).get().then((query) => {
             query.forEach(element => {
+                if(self.img_sample == null){
+                }else{
+                    /* imageの処理 */
+                    var storageRef = firebase.storage().ref();
+                    var mountainImagesRef = storageRef.child('images/' + self.img_tmpname + '.png');
+                    var file = self.img_sample; // use the Blob or File API
+                    mountainImagesRef.put(file).then(function(snapshot) {
+                    });
+                    /* imageの処理終了 */
+                }
+
                 this.lang = element.id
-                console.log(element.data())
-                console.log(element.id)
                 var langref = db.collection("languages").doc(this.lang)
                 let citiesRef = firebase.firestore().collection('users').doc(self.id);
-                console.log(langref)
                 citiesRef.update({
                     /* 一致した場合 */
                     birth: self.birth,
@@ -213,14 +222,15 @@
                     profile:self.text,
                     language_id:langref,
                 });
-            this.$router.push('/profile')
+                alert("変更しました")
+                this.$router.push('/profile')
                 });
             }).catch((error) => {
                 console.log(error)
             });
 
             
-        }
+        },
      },
      
      created:function () {
@@ -228,31 +238,40 @@
             /* ログイン中のユーザーのメールアドレスを取得する */
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
             firebase.auth().onAuthStateChanged(function(user) {
+            var storagename = user.email;
+            var a = storagename.split("@");
+            self.img_tmpname = a[0];
             let citiesRef = firebase.firestore().collection('users');
             let query = citiesRef.where('mailadress', '==', user.email).get()
               .then(snapshot => {
                 if (snapshot.empty) {
                   /* 一致する物がなかった場合 */
-                  console.log('No matching documents.');
                   return;
                 }
                 /* 一致した場合 */
                 snapshot.forEach(doc => {
+                  
                   self.id=doc.id;
                   self.name=doc.data().name;
-                  
+                  /* image処理 */
+                  var storage = firebase.storage();
+                  var storageRef = storage.ref();
+                  storageRef.child(doc.data().imagepass).getDownloadURL().then(function(url) {
+                    var test = url;
+                    self.uploadedImage = test;
+                  }).catch(function(error) {
+                    alert(error);
+                  });
+
                   var b = doc.data().birth;
                   b = b.replace("/","-");
                   b = b.replace("/","-");
-                  console.log(b);
                   self.birth=b;
                   self.text=doc.data().profile;
                   self.language = doc.data().language_id.path;
-                  console.log(self.language);
                   var a = self.language.split('/');
                   db.collection('languages').doc(a[1]).get().
                   then((query)=> {
-                      console.log(query.data().name);
                       self.language = query.data().name;
                   })
                   console.log(doc.id, '=>', doc.data().name);
@@ -267,10 +286,7 @@
             db.collection('languages').get().then((query) => {
             query.forEach(element => {
                 var data = element.data()
-                console.log(data.name)
                 this.languageList.push(data.name)
-                console.log(this.languageList)
-                console.log(element.id)
             });
             }).catch((error=>{
             console.log(error)
@@ -288,7 +304,7 @@
 <!-- スタイルを指定 -->
 <style scoped>
 .main_div{
-    width:70%;
+    width:85%;
     margin:auto;
 }
 /* 改行キャンセルの呪文詠唱 */
