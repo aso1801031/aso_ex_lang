@@ -7,6 +7,8 @@
     elevation="3"
     :weekday-format="getDay"
     :allowed-dates='allowedDate'
+    :events="arrayEvents"
+    event-color="pink lighten-1"
     v-model="picker"
     />
     <p class="mt-1 mb-2 today">{{l_date}}</p>
@@ -27,6 +29,7 @@ export default {
       l_date: null,
       allLessons: [],
       lessonIds:[],
+      arrayEvents: null,
     };
   },
   computed: {
@@ -73,23 +76,40 @@ export default {
         maxAllowedDay.getMonth(),
         maxAllowedDay.getDate()
       )
-      return today <= new Date(val) //&& new Date(val) <= maxAllowedDay
-     },
+      return today <= new Date(val)
+    },
   },
   created:function () {
+    const events=[];
+    // 現在の時間を取得
+    let today = new Date();
+    let l_date;
     firebase.firestore().collection('lessons').get().then(snapshot => {
       snapshot.forEach(doc => {
-        doc.data().teacher_id.get().then(res => { 
-          //this.language = res.data().name
-          if(res.id === this.$store.state.id){
-            //console.log(res.id,doc.id)
-            this.allLessons.push(doc.data())
-            this.lessonIds.push(doc.id)
-          }
-        })
+        l_date = new Date(doc.data().lesson_date+" "+doc.data().lesson_time)
+
+        if(doc.data().teacher_id.id === this.$store.state.id && today < l_date){
+          this.allLessons.push(doc.data())
+          this.lessonIds.push(doc.id)
+          events.push(doc.data().lesson_date)
+          //console.log(events,events.length,this.allLessons[0].title)
+          let cnt = 0;
+          this.arrayEvents = [...Array(events.length)].map(() => {
+              const day = new Date(events[cnt]).getDate()
+              const d = new Date()
+              d.setDate(day)
+              //console.log("day",day,"d",d.toISOString().substr(0, 10))
+              cnt++
+              return d.toISOString().substr(0, 10)
+          })
+
+        }
+
       })
     })
     console.log(this.$store.state.id)
+    console.log("created")
+
   },
 
 };
