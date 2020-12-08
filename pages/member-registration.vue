@@ -203,7 +203,7 @@
             value: "",
             displayButtons: true,
             language: "",
-            id: "1801000",
+            id: "",
             img: null,
         }),
         created(){
@@ -317,6 +317,11 @@
             },
 
             signup:function(){
+                // 画像の名前を設定するために、学籍番号をメールアドレスより取得
+                var storagename = this.$store.state.mailadress;
+                var a = storagename.split("@");
+                this.id = a[0];
+
                 const file = this.img
                 const storageRef = firebase.storage().ref('/images/' + this.id + ".png")
                 // 画像をStorageにアップロード
