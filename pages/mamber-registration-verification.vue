@@ -90,11 +90,11 @@
                     <v-row>
                         <v-col cols="12" md="1"></v-col>
                         <v-col cols="12" md="4" align=center>
-                            <h3 class="mt-10">Image</h3>
+                            <h3 class="mt-13">Image</h3>
                         </v-col>
                         <v-col cols="12" md="1"></v-col>
                         <v-col cols="12" md="6" align=center>
-                            <p class="mt-10">{{ this.$store.state.imagepass }}</p>
+                            <img　src=""　alt="noImage" id="a" height="150" width="150" class="">
                         </v-col>
                     </v-row>
 
@@ -150,6 +150,7 @@ var db = firebase.firestore();
         created(){
             var self = this
             firebase.auth().onAuthStateChanged(function(user) {
+                //
                 db.collection("languages").where('name' , "==" , self.$store.state.language_id).get().then((query) => {
                 query.forEach(element => {
                     self.lang = element.id
@@ -159,6 +160,18 @@ var db = firebase.firestore();
                 }).catch((error) => {
                     console.log(error)
                 });
+
+                //画像
+                var storage = firebase.storage();
+                var storageRef = storage.ref();
+                storageRef.child("images/" +"1801000"+".png").getDownloadURL().then(function(url) {
+                var test = url;
+                    document.getElementById("a").src = test;
+                }).catch(function(error) {
+                    alert(error);
+                });
+
+
             })
         },
 

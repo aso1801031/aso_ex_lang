@@ -130,20 +130,21 @@
                             </ValidationProvider>
                         </v-col>
                     </v-row>
+                    
                     <!-- image  -->
-                    <!-- <v-row>
+                    <v-row>
                         <v-col cols="12" md="4" align=center>
                             <h3 class="mt-10">Image</h3>
                         </v-col>
                         <v-col cols="12" md="8">
                             <v-file-input
-                            v-model="imagepass"
+                            accept="image/*"
                             label="File input"
                             class="mt-6"
+                            @change="uplord($event)"
                             ></v-file-input>
                         </v-col>
-                    </v-row> -->
-
+                    </v-row>
 
                     <!--signup_btn-->
                     <div class="signup_btn mb-16 mt-10">
@@ -202,6 +203,8 @@
             value: "",
             displayButtons: true,
             language: "",
+            id: "1801000",
+            img: null,
         }),
         created(){
             db.collection('languages').get().then((query) => {
@@ -306,7 +309,23 @@
             },
         },
         methods:{
+            // 画像ファイルが変更される度、呼び出される
+            uplord: function (e){
+                var self = this;
+                self.img = e
+                console.log(this.img)
+            },
+
             signup:function(){
+                const file = this.img
+                const storageRef = firebase.storage().ref('/images/' + this.id + ".png")
+                // 画像をStorageにアップロード
+                storageRef.put(file).then(() => {
+                    console.log("正常に動作しました")
+                }).catch((error) => {
+                    console.log(error)
+                })
+
                 this.displayButtons = false
                 this.$router.push('mamber-registration-verification')
             },
