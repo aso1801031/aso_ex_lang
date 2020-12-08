@@ -217,14 +217,7 @@
 
             },
             join(id){
-                let choosepath = "choose_lesson/"
-                firebase.firestore().collection('lessonAttendances').get().then(snapshot => {
-                    snapshot.forEach(doc => {
-                        if(doc.data().lesson_id.id == id){
-                            location.href="/choose_lesson/"+id;
-                        }
-                    })
-                })
+                location.href="/choose_lesson/"+id;
             }
         },
         created:function () {
