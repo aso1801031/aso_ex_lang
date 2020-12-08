@@ -150,10 +150,6 @@ var db = firebase.firestore();
         created(){
             var self = this
             firebase.auth().onAuthStateChanged(function(user) {
-                console.log(user)
-                self.mail = user.email
-                console.log(self.mail)
-
                 db.collection("languages").where('name' , "==" , self.$store.state.language_id).get().then((query) => {
                 query.forEach(element => {
                     self.lang = element.id
