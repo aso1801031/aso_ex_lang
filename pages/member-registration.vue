@@ -316,7 +316,7 @@
                 console.log(this.img)
             },
 
-            signup:function(){
+            signup:async function(){
                 // 画像の名前を設定するために、学籍番号をメールアドレスより取得
                 var storagename = this.$store.state.mailadress;
                 var a = storagename.split("@");
@@ -327,12 +327,15 @@
                 // 画像をStorageにアップロード
                 storageRef.put(file).then(() => {
                     console.log("正常に動作しました")
+                    this.displayButtons = false
+                    this.$router.push('mamber-registration-verification')
                 }).catch((error) => {
                     console.log(error)
                 })
 
-                this.displayButtons = false
-                this.$router.push('mamber-registration-verification')
+               
+
+                
             },
             submit:function(){
                 this.$router.push('login')
