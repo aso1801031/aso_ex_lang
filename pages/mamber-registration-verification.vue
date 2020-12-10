@@ -166,6 +166,8 @@ var db = firebase.firestore();
                 var storagename = self.$store.state.mailadress;
                 var a = storagename.split("@");
                 this.asoid = a[0];
+                console.log("asoid:" + this.asoid)
+
                 var storage = firebase.storage();
                 var storageRef = storage.ref();
                 storageRef.child("images/" +this.asoid+".png").getDownloadURL().then(function(url) {
