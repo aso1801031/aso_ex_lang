@@ -146,7 +146,6 @@ var db = firebase.firestore();
             profile: "",
             birth: "",
             lang:"",
-            asoid:"",
         }),
         created(){
             var self = this
@@ -165,12 +164,14 @@ var db = firebase.firestore();
                 //画像
                 var storagename = self.$store.state.mailadress;
                 var a = storagename.split("@");
-                this.asoid = a[0];
-                console.log("asoid:" + this.asoid)
+                var asoid = "";
+                console.log(a)
+                asoid = a[0]; // エラー出てる
+                console.log("asoid:" + asoid)
 
                 var storage = firebase.storage();
                 var storageRef = storage.ref();
-                storageRef.child("images/" +this.asoid+".png").getDownloadURL().then(function(url) {
+                storageRef.child("images/" + asoid+".png").getDownloadURL().then(function(url) {
                 var test = url;
                     document.getElementById("a").src = test;
                 }).catch(function(error) {
