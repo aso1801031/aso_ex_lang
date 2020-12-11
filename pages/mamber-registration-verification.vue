@@ -175,7 +175,7 @@ var db = firebase.firestore();
                 var test = url;
                     document.getElementById("a").src = test;
                 }).catch(function(error) {
-                    alert(error);
+                    console.log(error);
                 });
 
 
