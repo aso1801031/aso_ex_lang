@@ -7,11 +7,15 @@
             <!-- 画像全体のグラデーション  -->
             <v-sheet color=rgb(255,255,255,0.0) :height="sheetHeightAll" width="100%" class="background">
               <!-- 　アプリ名（左上に表示） -->
-              <div class="quickSand info--text pl-3" style="font-size:25px;">Aso Language App</div>
+              <v-row>
+                
+                <div class="quickSand info--text pl-3" style="font-size:50px;">Alacarte</div>
+              </v-row>
+              
               <v-sheet color=rgb(255,255,255,0.0) :height="600" width="100%">
 
 
-                <v-row class="pl-5 pt-10 " >
+                <v-row class="pl-5 pt-5 " >
 
                   <!-- キャッチフレーズ表示域 -->
                   <v-col cols="5" sm="4" md="4" lg="4" xl="4" class="pl-5">
@@ -65,26 +69,20 @@
                 <v-sheet class="linear-background" color=rgb(0,0,0,0.0) :height="sheetHeightBottom" width="100%">
                   
                   <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-                  <v-carousel-item v-for="(slide,i) in slides" :key="i">
-                    <v-sheet color=rgb(255,255,255,0.0) height="">
-                      <v-row >
-                        
-                        <v-col cols="7" class="pl-5 ml-10 mt-5">
-                          <div class="info--text quickSand box-text" >{{slide}}</div>
-                        </v-col>
-                        <v-spacer></v-spacer>
-                      </v-row>
-                    </v-sheet>
-                  </v-carousel-item>
+                    <v-carousel-item v-for="(slide,i) in slides" :key="i">
+                      <v-sheet color=rgb(255,255,255,0.0) height="">
+                        <v-row >
+                          
+                          <v-col cols="11" lg="7" class="pl-5 ml-10 mt-1">
+                            <div class="info--text quickSand box-text" >{{slide}}</div>
+                          </v-col>
+                          <v-spacer></v-spacer>
+                        </v-row>
+                      </v-sheet>
+                    </v-carousel-item>
                     
                   </v-carousel>
-  
-                  <!-- <v-row>
-                    <v-col cols="11" class="pl-5 ml-5">
 
-                      <div class="info--text quickSand box-text" style="font-size:40px;">{{welcome_text}}</div>
-                    </v-col>
-                  </v-row> -->
                 </v-sheet>
                 <!-- 画面下の帯_end -->
                 
@@ -117,7 +115,7 @@ export default {
           'ALA ist die beste Sprachunterrichtsanwendung für ASO-Studenten. Perfekt konzipiert, um Ihre Sprachkenntnisse zu verbessern und mehr Möglichkeiten zu schaffen, Menschen miteinander in Kontakt zu bringen. ',
           'ALA es la mejor aplicación de lecciones de idiomas para los estudiantes de ASO. Perfectamente diseñada para mejorar tus habilidades lingüísticas y tener más oportunidades de conectar a la gente. '
         ],
-      min_height: 700,
+      min_height: 800,
       
       
     }

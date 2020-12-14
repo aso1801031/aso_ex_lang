@@ -129,6 +129,7 @@ export default {
           language_id: langref,
           detail: this.detail,
           teacher_id: teachref,
+          joinFlag: false,
       }).then(function(docRef){
         console.log('成功！',docRef.id)
       }).catch(function(error){

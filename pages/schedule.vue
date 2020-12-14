@@ -175,7 +175,6 @@ export default {
     font-size: 1.3em;
   }
   .v-date-picker-table .v-btn {
-    z-index: auto;
     margin: 20px;
     padding: 3px;
     font-size: 1.2em;

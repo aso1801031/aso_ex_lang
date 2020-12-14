@@ -93,13 +93,25 @@
                         </v-col>
                         <v-col cols="12" md="4" offset="2">
                             <!--参加ボタン-->
-                            <v-btn 
-                            class="accent"
-                            elevation="3"
-                            x-large
-                            v-on:click="join(lesson.id)">
-                                Join!
-                            </v-btn>              
+                            <div v-if="lesson.data.joinFlag">
+                                <v-btn
+                                elevation="2"
+                                color="grey"
+                                class="white--text"
+                                x-large>
+                                    Joined
+                                </v-btn>           
+                            </div>
+                            <div v-else>
+                                <v-btn 
+                                class="accent"
+                                elevation="3"
+                                x-large
+                                v-on:click="join(lesson.id)">
+                                    Join!
+                                </v-btn>                  
+       
+                            </div>
                         </v-col>
                     </v-row>
                 </div>
