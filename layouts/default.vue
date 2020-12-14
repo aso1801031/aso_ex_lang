@@ -7,8 +7,8 @@
       class="secondary white--text"
     >
      <h1>
-      <nuxt-link to='/' class="white--text" style="text-decoration: none;">
-       Service Name
+      <nuxt-link to='/home' class="white--text" style="text-decoration: none;">
+       Alacarte
       </nuxt-link>
      </h1>
       <v-spacer />
@@ -22,7 +22,7 @@
           <nuxt-link v-bind='item' class="white--text mr-3" style="text-decoration: none;">
             {{item.title}}
 
-            <img v-bind:src='item.icon' width='16px' height="16px">
+            <img v-bind:src='item.icon' width='16px' height="16px"/>
 
           </nuxt-link>
       </div>
@@ -64,27 +64,27 @@ export default {
       fixed: false,
       items: [
         {
-          icon: require('@/assets/search.png'),
+          icon: '/image/Search.png',
           title: '検索',
           to: '/search'
         },
         {
-          icon: require('@/assets/schedule.png'),
+          icon: '/image/Schedule.png',
           title: '予定確認',
           to: '/schedule'
         },
         {
-          icon: require('@/assets/graph.png'),
+          icon: '/image/History.png',
           title: '学習履歴確認',
           to: '/history'
         },
         {
-          icon: require('@/assets/lesson_register.png'),
+          icon: '/image/Lesson.png',
           title: 'レッスン登録',
           to: '/lesson_register'
         },
         {
-          icon: require('@/assets/profile.png'),
+          icon: '/image/Profile.png',
           title: 'プロフィール',
           to: '/profile'
         },
@@ -112,10 +112,10 @@ export default {
       //   // An error happened.
       // });
       this.$router.push("/login");
-    } 
+    }
   },
   created: ()=>{
-      
+
   },
 }
 </script>

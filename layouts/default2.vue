@@ -8,7 +8,7 @@
     >
      <h1>
       <nuxt-link to='/' class="white--text" style="text-decoration: none;">
-       Service Name
+       Alacarte
       </nuxt-link>
      </h1>
 
