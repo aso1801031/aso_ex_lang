@@ -154,15 +154,12 @@
         name: '',
         text: '',
         birth: '',
-        id:'ai',
         displayButtons: true,
         languageList:[],
         language:'',
         img_sample:null,
         img_tmpname:"",
-
-        
-        
+        id:"",
         }),
      computed:{
         // 入力欄未入力時
@@ -222,7 +219,8 @@
                     profile:self.text,
                     language_id:langref,
                 });
-                this.$router.push('/profile')
+                alert("変更しました")
+                this.$router.push('/AdManagement')
                 });
             }).catch((error) => {
                 console.log(error)
@@ -232,16 +230,17 @@
         },
      },
      
-     created:function () {
+     async created() {
             var self = this
+            self.id = this.$route.params.id;
             /* ログイン中のユーザーのメールアドレスを取得する */
             /* 取得したメールアドレスとuserテーブルのメールアドレスの一致する情報を代入する */
-            firebase.auth().onAuthStateChanged(function(user) {
-            var storagename = user.email;
+            await firebase.auth().onAuthStateChanged(function(user) {
+            var storagename = self.id;
             var a = storagename.split("@");
             self.img_tmpname = a[0];
             let citiesRef = firebase.firestore().collection('users');
-            let query = citiesRef.where('mailadress', '==', user.email).get()
+            let query = citiesRef.where('mailadress', '==', self.id).get()
               .then(snapshot => {
                 if (snapshot.empty) {
                   /* 一致する物がなかった場合 */
@@ -295,10 +294,6 @@
 
     }
 </script>
-
-<router>
-  path: '/profile/update'
-</router>
 
 <!-- スタイルを指定 -->
 <style scoped>

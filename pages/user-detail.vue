@@ -92,9 +92,8 @@
                   storageRef.child(doc.data().imagepass).getDownloadURL().then(function(url) {
                     var test = url;
                     document.getElementById("a").src = test;
-                  
                   }).catch(function(error) {
-                    alert(error);
+                    console.log(error);
                   });
                   self.name=doc.data().name;
                   self.birth=doc.data().birth;

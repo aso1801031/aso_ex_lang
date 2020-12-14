@@ -105,7 +105,11 @@ export default {
                         console.log(1,doc.id, " => ", doc.data());
                         this.$store.commit("changId", doc.id);
                         console.log(2);
-                        this.$router.push("/home");2
+                        if(doc.data().admin_flg === "false"){
+                            this.$router.push("/home");
+                        }else{
+                            this.$router.push("/AdManagement")
+                        }
                     }
                 })
             })
