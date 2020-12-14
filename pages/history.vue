@@ -12,7 +12,7 @@
         <v-icon @click="rear">mdi-arrow-right</v-icon>
       </v-flex>
     </v-layout>
-    <LineChart :chartData="this.chartdata" :options="this.options" ref="Line" />
+    <LineChart :chartData="this.chartdata" :options="this.options" ref="Line" class="white pt-10 pr-5 pl-5 pb-5 mb-3"/>
     <v-btn-toggle
     v-model="datechoice"
     mandatory
