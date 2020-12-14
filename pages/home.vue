@@ -4,7 +4,6 @@
 
         <!-- 画像エリア -->
         <div class="gajou">
-            <p>test環境</p>
             <img width="35%" height="35%" src="/image/aso.jpg">
         </div>
 
