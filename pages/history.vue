@@ -104,7 +104,9 @@ export default {
             date.push(query.data().name)
           })
           console.log(date)
-          self.historydata.push(date)
+          if(lesson.data().joinFlag == true){
+            self.historydata.push(date)
+          }
           console.log(self.historydata)
         })
         })
@@ -126,7 +128,9 @@ export default {
             await db.collection('languages').doc(language).get().then((query) =>{
               date.push(query.data().name)
             })
-            self.historydata.push(date)
+            if(query.data().joinFlag == true){
+              self.historydata.push(date)
+            }
             console.log('push')
             self.kirikae()
           })
