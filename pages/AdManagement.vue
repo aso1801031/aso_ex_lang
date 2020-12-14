@@ -10,17 +10,17 @@
             <v-container class="profile_card">
                 <v-row>
                     <v-col md="1">
-                        <img　src=""　alt="noImage" id="" height="200" width="200" class="mb-5">
+                        <!-- <img　src=""　alt="noImage" id="" height="200" width="200" class="mb-5"> -->
                     </v-col>
                     <v-col md="11">
                     <v-row style="">
                         <v-col><h3>Username:</h3></v-col>
                         <v-col><h3>{{ allUsers.name }}</h3></v-col>
                     </v-row>
-                    <v-row style="">
+                    <!-- <v-row style="">
                         <v-col><p>Languages:</p></v-col>
-                        <!-- <v-col><p>{{ allUsers.language_id }}</p></v-col> -->
-                    </v-row>
+                        <v-col><p>{{ allUsers.language_id }}</p></v-col>
+                    </v-row> -->
                     <v-row style="">
                         <v-col><p>birth:</p></v-col>
                         <v-col><p>{{ allUsers.birth }}</p></v-col>
@@ -39,12 +39,12 @@
                         >
                             Edit
                         </v-btn>  
-                        <v-btn 
+                        <!-- <v-btn 
                         class="accent"
                         elevation="3"
                         v-on:click="delet(allUsers.mailadress)">
                             Delete
-                        </v-btn>  
+                        </v-btn>  --> 
                         </v-col>
                 </v-row>
             </v-container>
@@ -66,6 +66,7 @@
             }
         },
         created:function () {
+            
             firebase.firestore().collection('users').get().then(snapshot => {
                 snapshot.forEach(doc => {
                     

@@ -11,7 +11,10 @@
        Alacarte
       </nuxt-link>
      </h1>
-     <div>
+     <h1 class="white--text menu" style="text-decoration: none;">
+         管理者メニュー
+     </h1>
+     <div class="logout">
         <button onclick="location.href='login" @click="logoutUser">ログアウト</button>
         <img src="@/assets/logout.png" width='16px' height="16px">
     </div>
@@ -41,12 +44,21 @@ export default {
       if (!store.getters['user/isAuthenticated']) {
         return redirect('/home')
       }
-      firebase.firestore().collection('users').get().then(snapshot => {
+      
+      
+    },
+    beforeCreate() {
+        firebase.auth().onAuthStateChanged(function(user) {
+      firebase.firestore().collection('users').where('mailadress', '==', user.email).get()
+        .then(snapshot => {
             snapshot.forEach(doc => {
-                console.log("a");
+                if(doc.data().admin_flg === "false")
+                {
+                    location.href="/"
+                }
             })
         })
-      
+        })
     },
   data () {
     return {
@@ -59,6 +71,28 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-  }
+  },
+  methods: {
+    ...mapActions('user', [ 'logout' ]),
+    async logoutUser() {
+      await this.logout()
+      // firebase.auth().signOut().then(function() {
+      //   console.log("signout")
+      // }).catch(function(error) {
+      //   // An error happened.
+      // });
+      this.$router.push("/login");
+    }
+  },
 }
 </script>
+
+<style scoped>
+.logout{
+    
+}
+.menu{
+    margin-left: 30px;
+    margin-right: 50%;
+}
+</style>

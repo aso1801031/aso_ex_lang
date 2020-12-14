@@ -145,6 +145,7 @@
 
 
     export default {
+      layout:"default3",
       data: () => ({
         uploadedImage:'',
         img_name:'',
