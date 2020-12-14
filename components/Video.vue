@@ -9,7 +9,7 @@
 
     <v-col cols="12" sm="6" class="text-right" >
       <v-row justify="end" class="pr-2">
-        <v-sheet :width="videoWidthLocal" :height="videoHeightLocal" class="success">
+        <v-sheet :width="videoWidthLocal" :height="videoHeightLocal" >
           <video autoplay :srcObject.prop="localStream" v-bind:style="{maxWidth:videoWidthLocal+'px',width:videoWidthLocal+'px'}" ></video>       
         </v-sheet>
       </v-row>
@@ -18,7 +18,8 @@
           <!-- <input v-model="searchText" class="white primary--text mb-2"> -->
           <v-spacer></v-spacer>
           
-          <div>{{myId}}</div><v-btn @click = "makeCall" x-large class="accent">call</v-btn>
+          <!-- <div>{{myId}}</div> -->
+          <v-btn @click = "makeCall" x-large class="accent">call</v-btn>
         </v-col>
         
       </v-row>

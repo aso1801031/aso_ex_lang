@@ -7,11 +7,15 @@
             <!-- 画像全体のグラデーション  -->
             <v-sheet color=rgb(255,255,255,0.0) :height="sheetHeightAll" width="100%" class="background">
               <!-- 　アプリ名（左上に表示） -->
-              <div class="quickSand info--text pl-3" style="font-size:25px;">Aso Language App</div>
+              <v-row>
+                
+                <div class="quickSand info--text pl-3" style="font-size:50px;">Alacarte</div>
+              </v-row>
+              
               <v-sheet color=rgb(255,255,255,0.0) :height="600" width="100%">
 
 
-                <v-row class="pl-5 pt-10 " >
+                <v-row class="pl-5 pt-5 " >
 
                   <!-- キャッチフレーズ表示域 -->
                   <v-col cols="5" sm="4" md="4" lg="4" xl="4" class="pl-5">
