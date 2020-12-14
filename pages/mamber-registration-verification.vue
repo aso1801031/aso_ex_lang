@@ -175,7 +175,7 @@ var db = firebase.firestore();
                 var test = url;
                     document.getElementById("a").src = test;
                 }).catch(function(error) {
-                    alert(error);
+                    console.log(error);
                 });
 
 
@@ -184,14 +184,19 @@ var db = firebase.firestore();
 
         methods:{
             signup:function(){
+                var self = this
                 const db = firebase.firestore()
                 let dbUsers = db.collection('users')
                 var langref = db.collection("languages").doc(this.lang)
+
+                var storagename = self.$store.state.mailadress;
+                var a = storagename.split("@");
+
                 dbUsers
                 .add({
                     admin_flg: "false",
                     birth: this.$store.state.birth,
-                    imagepass: "1",
+                    imagepass: "images/"+a[0]+".png",
                     language_id: langref,
                     mailadress: this.$store.state.mailadress,
                     name: this.$store.state.name,

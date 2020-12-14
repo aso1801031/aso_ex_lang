@@ -1,7 +1,7 @@
 <template>
   <v-row class="pa-4">
     <v-col cols="12" sm="6">
-      <v-sheet :width="videoWidthOnline" :height="videoHeightOnline" class="success" >
+      <v-sheet :width="videoWidthOnline" :height="videoHeightOnline" v-bind:class="{ success: !connectFlag, info:connectFlag}" >
         <video autoplay :srcObject.prop="otherStream" v-bind:style="{maxWidth:videoWidthOnline+'px',width:videoWidthOnline+'px'}" id="online"></video>
       </v-sheet>
       
@@ -48,6 +48,7 @@ export default {
       searchId:"",
       roomId: this.$route.params.id,
       fullId:"",
+      connectFlag:false,
       
     }　
   },
@@ -69,7 +70,9 @@ export default {
           }
           this.searchId = topId + bottomOtherId
           console.log("[Video.vue] other id:",this.searchId)
-        })
+        }).then(none => {
+          this.makeCall()
+          })
       })
       
       
@@ -92,12 +95,17 @@ export default {
   },
   methods: {
     makeCall(){
+      
       try {
         console.log("call!!!")
         this.mediaConnection = this.peer.call(this.searchId,this.localStream)
+        this.peer.on('error', function(err){
+          console.log("[Video]: guess your partner is's ready for call...");
+        })
         this.mediaConnection.on('stream', stream => {
           console.log("streamきたよ!!!")
           this.otherStream = stream;
+          this.connectFlag = true
         })
       } catch (error) {
           console.log(error)
@@ -105,18 +113,19 @@ export default {
     },
   },
   async mounted(){
-    this.peer.on('open', () => {
+    await this.peer.on('open', () => {
       console.log('peer opened!')
       this.myId = this.peer.id
-    });
-    this.peer.on('call', mediaConnection => {
+    })
+    await this.peer.on('call', mediaConnection => {
       console.log("コールされました")
       mediaConnection.answer(this.localStream);
       this.mediaConnection = mediaConnection
       this.mediaConnection.on('stream', stream => {
         console.log("streamきたよ!!!")
         this.otherStream = stream;
-    })
+        this.connectFlag = true
+      })
       
     })
     
