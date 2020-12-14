@@ -55,7 +55,7 @@
                 <div class="quickSand ml-5" style="">{{text}}</div>
               </v-col>
               <v-col cols="7"  align="right">
-                <v-btn class="accent mr-5" @click="join" elevation="0" large width="200">参加</v-btn>
+                <v-btn v-if="loadFlag" class="accent mr-5" @click="join" elevation="0" large width="200">参加</v-btn>
               </v-col>
             </v-row>
             <!-- カード下部_end -->
@@ -79,6 +79,7 @@ export default {
         id:this.$route.params.id,
         teacherUser: "",
         lesson_id:"",
+        loadFlag: false
         
       }
     },
@@ -102,13 +103,17 @@ export default {
             
           })
         })
+        this.loadFlag = true
       }
+      
     },
     methods:{
       async join(){
         console.log("join!")
         let refData = await this.createChat()
+        let lessonRef = firebase.firestore().collection('lessons').doc(this.id)
         await this.createAttendances(refData)
+        await lessonRef.update({joinFlag:true})
         this.$router.push("/home");
       },
       async createChat(){
