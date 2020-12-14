@@ -10,9 +10,9 @@
                             <h3 class="quickSand" style="text-align:center;">E-mail</h3>
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field  placeholder="E-mail"  v-model="email">
+                            <v-text-field  label="E-mail"  v-model="email">
                             </v-text-field>
-                        </v-col>  
+                        </v-col>
                     </v-row>
 
                     <v-row justify="center" align="center" >
@@ -20,7 +20,7 @@
                             <h3 class="quickSand" style="text-align:center;">Password</h3>
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field  placeholder="password"  v-model="password">
+                            <v-text-field  label="password"  v-model="password" type="password">
                             </v-text-field>
                         </v-col>
                     </v-row>
@@ -35,24 +35,24 @@
                             <v-btn block height="60" large to="/member-registration" class="accent " nuxt><h3>新規登録</h3></v-btn>
                         </v-col>
                     </v-row>
-                    
+
                 </v-card>
             </v-col>
         </v-row>
     </v-container>
 
-      
+
         <!-- <div class="backarea mt-10 pt-16 pb-16">
-            
-         
+
+
             <div class="nobr mt-10">
                 <h3 class="text_size"> E-mail </h3>
                 <input type="text" class="text_design ml-6" placeholder="E-mail"  v-model="email">
             </div>
 
-       
+
             <div align=center class="pr-16 mr-16">
-                
+
             </div>
 
             <div class="nobr mt-16">
@@ -61,21 +61,21 @@
                 <v-text-field type="password" class="text_design ml-6" placeholder="password" v-model="password">
                 </v-text-field>
             </div>
-                
-          
+
+
                 <v-btn x-large class="loginbtn_design mt-16 accent" type="submit" @click="submit">ログイン</v-btn>
 
-        
 
-               
+
+
                 <v-btn large to="/member-registration" class="newbtn_design mt-16 mb-10 accent " nuxt>新規登録</v-btn>
 
-            
+
 
         </div> -->
 
 
-</template> 
+</template>
 
 <!-- データ操作 -->
 <script>
