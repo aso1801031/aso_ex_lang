@@ -21,14 +21,16 @@
         >
           <nuxt-link v-bind='item' class="white--text mr-3" style="text-decoration: none;">
             {{item.title}}
-
-            <img v-bind:src='item.icon' width='16px' height="16px"/>
+            
+            <v-icon medium color="white darken-2">  {{item.icon}} </v-icon>
+            
 
           </nuxt-link>
       </div>
       <div>
-        <button onclick="location.href='login" @click="logoutUser">ログアウト</button>
-        <img src="@/assets/logout.png" width='16px' height="16px">
+        <button onclick="location.href='login" @click="logoutUser">ログアウト
+          <v-icon medium color="white darken-2">  mdi-logout-variant </v-icon>
+        </button>
       </div>
 
 
@@ -64,27 +66,27 @@ export default {
       fixed: false,
       items: [
         {
-          icon: '/image/Search.png',
+          icon: 'mdi-magnify',
           title: '検索',
           to: '/search'
         },
         {
-          icon: '/image/Schedule.png',
+          icon: 'mdi-calendar-clock',
           title: '予定確認',
           to: '/schedule'
         },
         {
-          icon: '/image/History.png',
+          icon: 'mdi-chart-bar',
           title: '学習履歴確認',
           to: '/history'
         },
         {
-          icon: '/image/Lesson.png',
+          icon: 'mdi-school',
           title: 'レッスン登録',
           to: '/lesson_register'
         },
         {
-          icon: '/image/Profile.png',
+          icon: 'mdi-account',
           title: 'プロフィール',
           to: '/profile'
         },
