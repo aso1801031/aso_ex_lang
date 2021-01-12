@@ -35,6 +35,7 @@ import Vue from 'vue'
 import LineChart from '@/components/graph.vue'
 import firebase from '~/plugins/firebase'
 var db = firebase.firestore();
+var date = new Date();
 
 
 export default {
@@ -66,11 +67,15 @@ export default {
         years: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         yearsflg: 0,
         days: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+        getyear: date.getFullYear(),
+        getmonth: date.getMonth()+1,
+        getday: date.getDate(),
 
     }
   },
   async created(){
     var self = this
+    console.log(this.getyear,this.getmonth,this.getday)
     if(this.flag == 0){
 
     await firebase.auth().onAuthStateChanged(await async function(user) {
@@ -93,7 +98,7 @@ export default {
       await db.collection('lessons').where('teacher_id' , '==' , u).get().then(async (query) => {
         query.forEach(lesson => {
           var data = lesson.data()
-          console.log('student:',lesson.data())
+          console.log('teacher:',lesson.data())
           console.log(data.lesson_date)
           var date = []
           date.push(data.lesson_date.split('-'))
@@ -104,8 +109,15 @@ export default {
             date.push(query.data().name)
           })
           console.log(date)
+          //レッスン登録済&日付条件クリアでプッシュする
           if(lesson.data().joinFlag == true){
-            self.historydata.push(date)
+            if(date[0][0] <= self.getyear){
+              if(date[0][1] <= self.getmonth || date[0][0] < self.getyear){
+                if(date[0][2] < self.getday || date[0][0] < self.getyear){
+                  self.historydata.push(date)
+                }
+              }
+            }
           }
           console.log(self.historydata)
         })
@@ -128,8 +140,15 @@ export default {
             await db.collection('languages').doc(language).get().then((query) =>{
               date.push(query.data().name)
             })
+            //レッスン登録済&日付条件クリアでプッシュする
             if(query.data().joinFlag == true){
-              self.historydata.push(date)
+              if(date[0][0] <= self.getyear){
+                if(date[0][1] <= self.getmonth || date[0][0] < self.getyear){
+                  if(date[0][2] < self.getday || date[0][0] < self.getyear){
+                    self.historydata.push(date)
+                  }
+                }
+              }
             }
             console.log('push')
             self.kirikae()
