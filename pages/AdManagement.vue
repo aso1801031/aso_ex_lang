@@ -9,24 +9,43 @@
             style="border-radius: 10px;">
             <v-container class="profile_card">
                 <v-row>
-                    <v-col md="1">画像を<br>表示</v-col>
-                    <v-row>
+                    <v-col md="1">
+                        <!-- <img　src=""　alt="noImage" id="" height="200" width="200" class="mb-5"> -->
+                    </v-col>
+                    <v-col md="11">
+                    <v-row style="">
                         <v-col><h3>Username:</h3></v-col>
                         <v-col><h3>{{ allUsers.name }}</h3></v-col>
                     </v-row>
-                    <v-row>
+                    <!-- <v-row style="">
                         <v-col><p>Languages:</p></v-col>
                         <v-col><p>{{ allUsers.language_id }}</p></v-col>
-                    </v-row>
-                    <v-row>
+                    </v-row> -->
+                    <v-row style="">
                         <v-col><p>birth:</p></v-col>
                         <v-col><p>{{ allUsers.birth }}</p></v-col>
                     </v-row>
+                    </v-col>
                     
                 </v-row>
                 <v-row>
-                        <button onclick="location.href='AdManagement/detail'" class="detailbtn_design mt-16 mb-10 ">変更</button>
-                        <button  class="detailbtn_design mt-16 mb-10" type="submit" @click="delet">削除</button>
+                        <v-col md="4" offset="8">
+                        <!-- <button onclick="location.href='AdManagement/detail'" class="detailbtn_design mt-16 mb-10 ">変更</button>
+                        <button  class="detailbtn_design mt-16 mb-10" type="submit" @click="delet">削除</button> -->
+                        <v-btn 
+                        class="accent"
+                        elevation="3"
+                        v-on:click="edit(allUsers.mailadress)"
+                        >
+                            Edit
+                        </v-btn>  
+                        <!-- <v-btn 
+                        class="accent"
+                        elevation="3"
+                        v-on:click="delet(allUsers.mailadress)">
+                            Delete
+                        </v-btn>  --> 
+                        </v-col>
                 </v-row>
             </v-container>
         </v-card>
@@ -37,6 +56,7 @@
 <script>
     import firebase from '~/plugins/firebase'
     export default {
+        layout:"default3",
         name:"",
         data: function(){
             return {
@@ -46,17 +66,24 @@
             }
         },
         created:function () {
+            
             firebase.firestore().collection('users').get().then(snapshot => {
                 snapshot.forEach(doc => {
+                    
                     this.allUsers.push(doc.data())
+                    console.log(this.allUsers)
                 })
             })
         },
         methods : {
-        delet() {
-            console.log("delete")
-
-            }
+        delet(id) {
+            console.log(id);
+            
+        },
+        edit(id) {
+            location.href="/AdManagementedit/"+id;
+        }
+        
         },
         
     }

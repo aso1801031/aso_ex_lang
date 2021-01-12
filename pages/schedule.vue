@@ -133,7 +133,7 @@ export default {
             this.teachAllLessons.push({id:"/schedule-detail/"+res.id,data:res.data()})
             this.teachEvents.push(res.data().lesson_date)
           }else if(doc.data().student_id.id === this.$store.state.id && today < l_date){
-            this.studentAllLessons.push({id:"/choose_lesson/"+res.id,data:res.data()})
+            this.studentAllLessons.push({id:"/schedule-detail/"+res.id,data:res.data()})
             this.studentEvents.push(res.data().lesson_date)
           }
 
