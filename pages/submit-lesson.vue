@@ -115,6 +115,10 @@ export default {
             this.titleflg = true
             return '入力してください'
           }else{
+            if(value.length > 20){
+              this.titleflg = true
+              return '20文字以内で入力してください'
+            }
             this.titleflg = false
           }
           return true
@@ -140,6 +144,10 @@ export default {
             this.detailflg = true
             return '入力してください'
           }else{
+            if(value.length > 100){
+              this.detailflg = true
+              return '100文字以内で入力してください'
+            }
             this.detailflg = false
           }
           return true
@@ -150,26 +158,33 @@ export default {
   },
   created(){
     db.collection('languages').get().then((query) => {
-      var flag = 0
       query.forEach(element => {
         var data = element.data()
         console.log(data.name)
         this.languageList.push(data.name)
         console.log(this.languageList)
-        flag++
         console.log(element.id)
       });
     }).catch((error=>{
       console.log(error)
     }));
 
+    db.collection("lessonHistorys").get().then((query) => {
+      query.forEach(element => {
+        var data = element.data()
+        console.log(data.user_id.path)
+        console.log(element.id)
+        });
+      }).catch((error) => {
+          console.log(error)
+      });
   },
   computed:{
     title: {
-      get: function(){
+      get: function(){//この中の変数の値が変化した時
         return this.$store.state.lesson.title
       },
-      set:function(newValue){
+      set:function(newValue){//titleの値が変化した時
         this.a = newValue
         this.$store.commit('lesson/title',this.a)
         console.log(this.title)

@@ -5,12 +5,13 @@
         <v-row>
             <v-col cols="12">
                 <v-card class="py-10">
+
                     <v-row justify="center" align="center" class="mt-5">
                         <v-col cols="3">
                             <h3 class="quickSand" style="text-align:center;">E-mail</h3>
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field  label="E-mail"  v-model="email">
+                            <v-text-field  label="E-mail"  v-model="email" :rules="emailRules">
                             </v-text-field>
                         </v-col>
                     </v-row>
@@ -20,8 +21,14 @@
                             <h3 class="quickSand" style="text-align:center;">Password</h3>
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field  label="password"  v-model="password" type="password">
+                            <v-text-field  label="password"  v-model="password" :rules="[v => !!v || 'Password is required']" type="password">
                             </v-text-field>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center" class="mt-0 error--text">
+                        <v-col cols="4" align="center">
+                            {{error_message}}
                         </v-col>
                     </v-row>
 
@@ -41,56 +48,24 @@
         </v-row>
     </v-container>
 
-
-        <!-- <div class="backarea mt-10 pt-16 pb-16">
-
-
-            <div class="nobr mt-10">
-                <h3 class="text_size"> E-mail </h3>
-                <input type="text" class="text_design ml-6" placeholder="E-mail"  v-model="email">
-            </div>
-
-
-            <div align=center class="pr-16 mr-16">
-
-            </div>
-
-            <div class="nobr mt-16">
-                <v-row></v-row>
-                <h3 class="text_size">password </h3>
-                <v-text-field type="password" class="text_design ml-6" placeholder="password" v-model="password">
-                </v-text-field>
-            </div>
-
-
-                <v-btn x-large class="loginbtn_design mt-16 accent" type="submit" @click="submit">ログイン</v-btn>
-
-
-
-
-                <v-btn large to="/member-registration" class="newbtn_design mt-16 mb-10 accent " nuxt>新規登録</v-btn>
-
-
-
-        </div> -->
-
-
 </template>
 
 <!-- データ操作 -->
 <script>
-    // 内部処理できてないお♡
-    // var flag = '1';
-    // var pass_flag = false;
-    // var login_flag = false
 import firebase from '~/plugins/firebase'
 import { mapActions } from 'vuex'
 export default {
+
     layout:"default2",
     data() {
         return {
         email: '',
-        password: ''
+        password: '',
+        error_message:'',
+        emailRules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
         }
     },
     methods : {
@@ -114,6 +89,7 @@ export default {
                 })
             })
         }).catch((error) => {
+            this.error_message = error.message
             console.log(error.message)
         })
         }
