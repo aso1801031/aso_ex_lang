@@ -115,6 +115,7 @@ export default {
             })
         }).catch((error) => {
             console.log(error.message)
+            alert("ログイン情報が違います。")
         })
         }
     }
