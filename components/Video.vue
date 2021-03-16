@@ -58,7 +58,7 @@ export default {
     var bottomId = this.$store.state.id.slice(0,8)
     this.fullId = topId+bottomId
     console.log("[Video.vue] my id:",this.fullId)
-    this.peer = new Peer(this.fullId,{key:"969c8db0-2e67-45f6-ac03-7adc5efddf18"})
+    this.peer = new Peer(this.fullId,{key:"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"})
     firebase.firestore().collection("chats").doc(this.roomId).get()
     .then(doc =>  {
       doc.data().user1.get().then(user_First =>{
